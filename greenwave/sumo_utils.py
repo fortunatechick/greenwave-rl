@@ -26,12 +26,20 @@ def sumo_tool(name: str) -> str:
     return str(sumo_home() / "tools" / name)
 
 
+# LIBSUMO_AS_TRACI makes `import traci` return libsumo, which would leave no real TraCI
+# for the GUI demo or for validation beside a libsumo simulation. The flag is therefore
+# read once, remembered under GREENWAVE_BACKEND (inherited by worker processes), and removed.
+_flag = os.environ.pop("LIBSUMO_AS_TRACI", None)
+if _flag is not None:
+    os.environ["GREENWAVE_BACKEND"] = "libsumo" if _flag == "1" else "traci"
+
+
 def use_libsumo(prefer: bool = True) -> bool:
     """LIBSUMO_AS_TRACI=1 forces libsumo, =0 forces traci, unset uses `prefer`."""
-    flag = os.environ.get("LIBSUMO_AS_TRACI")
-    if flag is None:
+    backend = os.environ.get("GREENWAVE_BACKEND")
+    if backend is None:
         return prefer
-    return flag == "1"
+    return backend == "libsumo"
 
 
 def build_cmd(

@@ -32,7 +32,6 @@ MIN_MAIN_STEPS = 60_000
 
 def measure_speed(episodes: int = 2) -> dict[str, float]:
     """Random policy on the peak regime, training mode (no tripinfo, no emissions)."""
-    os.environ.setdefault("LIBSUMO_AS_TRACI", "1")
     from greenwave.env.signal_env import SignalEnv
 
     env = SignalEnv(regime="peak", label="budget")

@@ -64,13 +64,16 @@ def train_sb3(spec: JobSpec) -> dict[str, float]:
     eval_kwargs = {**kwargs, "libsumo": False, "label": f"val_{spec.name}"}
     eval_env = SignalEnv(**eval_kwargs)
     curve = CurveLog(run_dir)
-    state = {"best": -np.inf, "next": spec.eval_every}
+    state = {"best": -np.inf, "next": spec.eval_every, "last": -1}
 
     def greedy(obs: np.ndarray) -> int:
         action, _ = model.predict(obs, deterministic=True)
         return int(action)
 
     def evaluate(step: int) -> None:
+        if step == state["last"]:
+            return
+        state["last"] = step
         val = validate(eval_env, greedy, spec)
         rewards = [ep["r"] for ep in model.ep_info_buffer] if model.ep_info_buffer else [0.0]
         curve.add({"step": step, **val, "train_reward": float(np.mean(rewards[-5:])),

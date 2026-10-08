@@ -9,7 +9,7 @@ license = { text = "MIT" }
 include = ["greenwave*"]
 
 [tool.ruff]
-line-length = 110
+line-length = 112
 target-version = "py311"
 extend-exclude = ["web", ".venv", "runs", "results"]
 

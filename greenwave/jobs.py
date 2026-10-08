@@ -75,6 +75,30 @@ class JobSpec:
         return cls.from_dict(json.loads(Path(path).read_text(encoding="utf-8")))
 
 
+def family_jobs(family: str) -> list[str]:
+    """Finished or committed training seeds of a family, e.g. ddqn_fair__peak__s0..s2."""
+    names = {p.parent.name for p in (ROOT / "runs").glob(f"{family}__s*/done.flag")}
+    for p in (ROOT / "results" / "models").glob(f"best_{family}__s*.json"):
+        names.add(p.stem.removeprefix("best_"))
+    return sorted(names)
+
+
+def best_job(family: str) -> str:
+    """The training seed of a family with the best validation score (used for replays)."""
+    best_name, best_score = "", float("-inf")
+    for name in family_jobs(family):
+        score = float("-inf")
+        for path in (ROOT / "runs" / name / "result.json", ROOT / "results" / "models" / f"best_{name}.result.json"):
+            if path.exists():
+                score = json.loads(path.read_text(encoding="utf-8")).get("best_val_score", score)
+                break
+        if score > best_score or not best_name:
+            best_name, best_score = name, score
+    if not best_name:
+        raise FileNotFoundError(f"no trained job for family '{family}'")
+    return best_name
+
+
 def find_checkpoint(job_name: str) -> tuple[Path, Path]:
     """(config.json, weights) for a trained job: runs/ first, then the committed models."""
     run = ROOT / "runs" / job_name

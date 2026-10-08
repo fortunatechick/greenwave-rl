@@ -31,12 +31,18 @@ def reward_params(**overrides: Any) -> dict[str, Any]:
     weights = dict(cfg["demand"]["passenger_weights"])
     if overrides.get("bus_weight") is not None:
         weights["bus"] = float(overrides["bus_weight"])
+    # Passenger weights are divided by the mean occupancy of the traffic mix, so the
+    # passenger-weighted reward has the scale of the vehicle-count reward and lambda means
+    # the same thing in both. Relative weights between classes are unchanged.
+    mix = cfg["demand"]["class_mix"]
+    mean_occupancy = sum(mix[c] * weights[c] for c in mix)
     params = {
         "kappa": float(r["kappa"]),
         "kappa_q": float(r["kappa_q"]),
         "lam": float(r["lambda"]),
         "T": float(r["T"]),
-        "weights": np.asarray(class_vector(weights), dtype=np.float64),
+        "weights": np.asarray(class_vector(weights), dtype=np.float64) / mean_occupancy,
+        "mean_occupancy": mean_occupancy,
     }
     for key in ("kappa", "kappa_q", "lam", "T"):
         if overrides.get(key) is not None:

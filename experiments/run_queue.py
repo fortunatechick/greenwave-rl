@@ -83,8 +83,7 @@ def launch(spec: JobSpec) -> subprocess.Popen:
     spec.run_dir.mkdir(parents=True, exist_ok=True)
     cfg = spec.run_dir / "config.json"
     cfg.write_text(spec.to_json(), encoding="utf-8")
-    env = {**os.environ, "LIBSUMO_AS_TRACI": "1", "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
-           "PYTHONUNBUFFERED": "1"}  # fmt: skip
+    env = {**os.environ, "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "PYTHONUNBUFFERED": "1"}
     out = open(LOGS / f"{spec.name}.log", "a", encoding="utf-8")  # noqa: SIM115
     proc = subprocess.Popen(
         [sys.executable, "-m", "greenwave.train", "--config", str(cfg)],

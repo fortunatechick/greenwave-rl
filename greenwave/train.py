@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import os
 import time
 from collections import deque
 from collections.abc import Callable
@@ -142,7 +141,6 @@ def train_ddqn(spec: JobSpec) -> dict[str, float]:
 
 
 def run_job(spec: JobSpec) -> dict[str, float]:
-    os.environ.setdefault("LIBSUMO_AS_TRACI", "1")
     run_dir = spec.run_dir
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "config.json").write_text(spec.to_json(), encoding="utf-8")

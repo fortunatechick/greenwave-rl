@@ -51,6 +51,19 @@ Every choice that departs from, or fills a gap in, `GREENWAVE_BUILD.md`. Entries
 - **Effect:** learning curves plot this validation score. Rewards used for training are
   exactly those in the spec.
 
+### 2026-10-09 - Passenger weights normalised in the reward  **[deviation]**
+- **What failed:** the reward-scale check of Phase 3. With raw passenger weights
+  (bus = 40) and kappa = 100, a random policy at peak produced |r| of 21 on average and up
+  to 150, outside the 0.1-10 range the spec asks for, and the fairness penalty (about 0.6)
+  was under 3 % of the reward, so lambda had almost no effect.
+- **Done instead:** in the reward, passenger weights are divided by the mean occupancy of
+  the traffic mix (4.525 persons per vehicle). Relative weights are unchanged (a bus still
+  counts 20 times a car); the passenger-weighted reward now has the scale of the
+  vehicle-count reward. Equivalent to kappa = 452.5 for the passenger-weighted terms.
+- **Effect:** lambda means the same thing with vehicle and passenger weighting, so that
+  ablation compares weighting and not scale. Reported person-weighted metrics are ratios
+  and are not affected.
+
 ### 2026-10-09 - Job queue implementation
 - **What:** `run_queue.py` launches one subprocess per job with a core-aware scheduler
   instead of a `ProcessPoolExecutor`, because libsumo allows one simulation per process and
