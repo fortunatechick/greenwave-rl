@@ -3,7 +3,7 @@
 **Fairness-aware deep reinforcement learning for adaptive signal control under mixed Indian traffic.**
 Agents learn to choose signal phases from live queues, weighting people rather than vehicles and never starving a minor road.
 
-[![CI](https://github.com/OWNER/greenwave-rl/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/greenwave-rl/actions/workflows/ci.yml)
+[![CI](https://github.com/fortunatechick/greenwave-rl/actions/workflows/ci.yml/badge.svg)](https://github.com/fortunatechick/greenwave-rl/actions/workflows/ci.yml)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)
 ![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)
 [![Live site](https://img.shields.io/badge/site-live-2BD4C8.svg)](https://SITE_URL)

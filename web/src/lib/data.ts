@@ -56,4 +56,4 @@ export const CONTROLLER_ORDER = [
 export const OURS = new Set(["ddqn_fair", "ddqn_fair_dr"]);
 
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://greenwave-rl.vercel.app").replace(/\/$/, "");
-export const repoUrl = process.env.NEXT_PUBLIC_REPO_URL ?? "https://github.com/Om-Chaudhari/greenwave-rl";
+export const repoUrl = process.env.NEXT_PUBLIC_REPO_URL ?? "https://github.com/fortunatechick/greenwave-rl";
