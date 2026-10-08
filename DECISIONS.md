@@ -64,6 +64,17 @@ Every choice that departs from, or fills a gap in, `GREENWAVE_BUILD.md`. Entries
   ablation compares weighting and not scale. Reported person-weighted metrics are ratios
   and are not affected.
 
+### 2026-10-09 - Discount 0.95 and reward clipping  **[deviation]**
+- **What failed:** the Phase 4 checkpoint. With gamma = 0.99, Double DQN on the skewed regime reached an average
+  queue of about 12.5 vehicles by 10k steps (max-pressure: 16.3) and then collapsed to about 65 by 20k, in most of
+  the first sweep runs. Seven 30k-step variants were run on one seed: lower learning rate with longer exploration
+  (never got below 19.5), target update every 2000 steps (collapsed to 62), Polyak averaging (never learned),
+  learning-rate decay (collapsed mid-run), reward clipping to +-3 (one dip to 23.8, otherwise 12-14),
+  gamma = 0.95 (11.3-13.6 from 10k steps on, no collapse).
+- **Done instead:** every agent (Double DQN, SB3 DQN, PPO) trains with gamma = 0.95 instead of 0.99 and with rewards clipped to [-3, 3] during training. Both shrink the range of Q-values, which grows with accumulated waiting in congested states. Evaluation metrics are unaffected by clipping.
+- **Effect:** the effective planning horizon drops from about 100 to about 20 decisions. The choice rests on one
+  seed per variant, and the combination of the two changes was not itself tested before the long runs.
+
 ### 2026-10-09 - Job queue implementation
 - **What:** `run_queue.py` launches one subprocess per job with a core-aware scheduler
   instead of a `ProcessPoolExecutor`, because libsumo allows one simulation per process and

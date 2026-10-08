@@ -72,6 +72,7 @@ class SignalEnv(gym.Env):
         gui: bool = False,
         label: str = "default",
         trace_signal: bool = False,
+        reward_clip: float = 0.0,
         extra_sumo_args: Sequence[str] = (),
     ) -> None:
         super().__init__()
@@ -99,6 +100,7 @@ class SignalEnv(gym.Env):
         self.tripinfo = tripinfo
         self.native_program = native_program
         self.trace_signal = trace_signal
+        self.reward_clip = float(reward_clip)  # 0 = off; training passes configs/train.yaml's value
         self.extra_sumo_args = list(extra_sumo_args)
 
         self.reward_name = reward
@@ -275,6 +277,8 @@ class SignalEnv(gym.Env):
                 snap = self._snapshot()
 
         reward = float(self.reward_fn(prev, snap))
+        if self.reward_clip > 0:
+            reward = min(max(reward, -self.reward_clip), self.reward_clip)
         self.snap = snap
         self.stats["decisions"] += 1
         self.stats["episode_reward"] += reward

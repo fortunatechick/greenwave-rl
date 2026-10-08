@@ -40,7 +40,8 @@ def validate(
     env: SignalEnv, act: Callable[[np.ndarray], int], spec: JobSpec
 ) -> dict[str, float]:
     """Greedy episodes on the validation seeds; returns the time-weighted selection score."""
-    score_fn = make_selection_score(spec.reward, **spec.reward_overrides())
+    gamma = float(spec.hp.get("gamma", load_cfg()["train"]["ddqn"]["gamma"]))
+    score_fn = make_selection_score(spec.reward, gamma=gamma, **spec.reward_overrides())
     scores, rewards, queues = [], [], []
     for seed, route in validation_cases(spec):
         obs, _ = env.reset(options={"sumo_seed": seed, "route_file": route})
@@ -79,7 +80,7 @@ def train_ddqn(spec: JobSpec) -> dict[str, float]:
 
     torch.set_num_threads(1)
     hp = dict(load_cfg()["train"]["ddqn"])
-    hp.update(spec.hp)
+    hp.update({k: v for k, v in spec.hp.items() if k != "env_reward_clip"})
     hp["hidden"] = tuple(hp["hidden"])
     cfg = DDQNConfig(**hp, smdp_discount=spec.smdp_discount, base_dt=float(spec.delta or 5))
     run_dir = spec.run_dir

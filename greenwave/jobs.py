@@ -7,7 +7,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-from greenwave.config import ROOT, dr_pool_files
+from greenwave.config import ROOT, dr_pool_files, load_cfg
 
 
 @dataclass
@@ -53,6 +53,7 @@ class JobSpec:
             "obs_mask": tuple(self.obs_mask),
         }
         if training:
+            kw["reward_clip"] = float(self.hp.get("env_reward_clip", load_cfg()["train"].get("reward_clip", 0.0)))
             if self.regime == "dr":
                 kw["route_files"] = dr_pool_files()
                 kw["regime"] = "peak"
