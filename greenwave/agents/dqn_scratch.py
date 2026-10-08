@@ -40,6 +40,10 @@ class DDQNConfig:
     hidden: tuple[int, ...] = (128, 128)
     smdp_discount: bool = False
     base_dt: float = 5.0
+    # Stabilisers (0 / 1.0 = off). See DECISIONS.md for why they are on in configs/train.yaml.
+    reward_clip: float = 0.0  # clip rewards to [-c, c] inside the TD target
+    tau: float = 0.0  # Polyak target update per gradient step; 0 keeps hard updates
+    lr_end_frac: float = 1.0  # linear learning-rate decay to this fraction of lr
 
 
 class QNetwork(nn.Module):
@@ -131,7 +135,10 @@ class DoubleDQN:
             gamma: torch.Tensor | float = self.cfg.gamma
             if self.cfg.smdp_discount:
                 gamma = self.cfg.gamma ** (batch["dt"] / self.cfg.base_dt)
-            return batch["reward"] + gamma * (1.0 - batch["terminated"]) * q_next
+            reward = batch["reward"]
+            if self.cfg.reward_clip > 0:
+                reward = reward.clamp(-self.cfg.reward_clip, self.cfg.reward_clip)
+            return reward + gamma * (1.0 - batch["terminated"]) * q_next
 
     def update(self) -> float:
         batch = self.buffer.sample(self.cfg.batch_size)
@@ -142,7 +149,17 @@ class DoubleDQN:
         loss.backward()
         nn.utils.clip_grad_norm_(self.q.parameters(), self.cfg.grad_clip)
         self.optim.step()
+        if self.cfg.tau > 0:
+            with torch.no_grad():
+                for target, online in zip(self.q_target.parameters(), self.q.parameters(), strict=True):
+                    target.lerp_(online, self.cfg.tau)
         return float(loss.item())
+
+    def set_progress(self, progress: float) -> None:
+        """Linear learning-rate decay; progress runs from 0 to 1 over training."""
+        frac = 1.0 + min(max(progress, 0.0), 1.0) * (self.cfg.lr_end_frac - 1.0)
+        for group in self.optim.param_groups:
+            group["lr"] = self.cfg.lr * frac
 
     def save(self, path: str | Path, extra: dict[str, Any] | None = None) -> None:
         torch.save(

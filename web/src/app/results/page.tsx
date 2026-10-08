@@ -55,6 +55,7 @@ export default function ResultsPage() {
       })),
   }));
 
+  const fairnessRegimes = [...new Set(Object.values(fairness).map((f) => f.regime))];
   const groups = [...new Set(ablations.map((a) => a.group))];
   const ablationMetrics = ["person_wait", "max_wait", "delay_bus"];
 
@@ -96,30 +97,41 @@ export default function ResultsPage() {
 
       <Section className="border-t border-line">
         <SectionHeading eyebrow="Fairness" title="Who waits longest under each reward design"
-          lead="Cumulative distribution of per-vehicle waiting time in the skewed regime, where one approach carries most of the traffic. A long right tail means some vehicles were left waiting." />
-        <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
-          <Card><EcdfChart fairness={fairness} T={meta.reward.T ?? 90} /></Card>
-          <div className="card overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <caption className="sr-only">Median, 95th percentile and maximum wait per reward design</caption>
-              <thead><tr className="border-b border-line text-xs uppercase tracking-wider text-muted">
-                <th scope="col" className="px-4 py-3 font-medium">Reward design</th>
-                <th scope="col" className="px-3 py-3 text-right font-medium">p50</th>
-                <th scope="col" className="px-3 py-3 text-right font-medium">p95</th>
-                <th scope="col" className="px-3 py-3 text-right font-medium">max</th>
-              </tr></thead>
-              <tbody>
-                {Object.entries(fairness).map(([k, f]) => (
-                  <tr key={k} className="border-b border-line/60 last:border-0">
-                    <th scope="row" className="px-4 py-2.5 font-medium">{f.label}</th>
-                    <td className="num whitespace-nowrap px-3 py-2.5 text-right">{fmt(f.p50, 0)} s</td>
-                    <td className="num whitespace-nowrap px-3 py-2.5 text-right">{fmt(f.p95, 0)} s</td>
-                    <td className="num whitespace-nowrap px-3 py-2.5 text-right">{fmt(f.max, 0)} s</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          lead="Cumulative distribution of per-vehicle waiting time, pooled over evaluation seeds. In the skewed regime one approach carries most of the traffic, which is where an agent is tempted to starve the others. A long right tail means some vehicles were left waiting." />
+        <div className="space-y-4">
+          {fairnessRegimes.map((regime) => {
+            const entries = Object.fromEntries(Object.entries(fairness).filter(([, f]) => f.regime === regime));
+            return (
+              <div key={regime} className="grid gap-4 lg:grid-cols-[3fr_2fr]">
+                <Card>
+                  <h3 className="mb-3 text-sm font-medium">{REGIME_LABEL[regime] ?? regime} regime</h3>
+                  <EcdfChart fairness={entries} T={meta.reward.T ?? 90} />
+                </Card>
+                <div className="card overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <caption className="sr-only">Median, 95th percentile and maximum wait per reward design, {regime} regime</caption>
+                    <thead><tr className="border-b border-line text-xs uppercase tracking-wider text-muted">
+                      <th scope="col" className="px-4 py-3 font-medium">Reward design</th>
+                      <th scope="col" className="px-3 py-3 text-right font-medium">p50</th>
+                      <th scope="col" className="px-3 py-3 text-right font-medium">p95</th>
+                      <th scope="col" className="px-3 py-3 text-right font-medium">max</th>
+                    </tr></thead>
+                    <tbody>
+                      {Object.entries(entries).map(([k, f]) => (
+                        <tr key={k} className="border-b border-line/60 last:border-0">
+                          <th scope="row" className="px-4 py-2.5 font-medium">{f.label}</th>
+                          <td className="num whitespace-nowrap px-3 py-2.5 text-right">{fmt(f.p50, 0)} s</td>
+                          <td className="num whitespace-nowrap px-3 py-2.5 text-right">{fmt(f.p95, 0)} s</td>
+                          <td className="num whitespace-nowrap px-3 py-2.5 text-right">{fmt(f.max, 0)} s</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            );
+          })}
+          {fairnessRegimes.length === 0 ? <p className="text-sm text-muted">Fairness distributions pending.</p> : null}
         </div>
       </Section>
 

@@ -29,6 +29,7 @@ class JobSpec:
     family: str = ""  # job name without the seed suffix
     eval_every: int = 10_000
     smdp_discount: bool = False
+    hp: dict[str, Any] = field(default_factory=dict)  # overrides of configs/train.yaml for this job
 
     def __post_init__(self) -> None:
         if not self.family:

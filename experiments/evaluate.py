@@ -39,13 +39,18 @@ def eval_seeds(n: int | None = None) -> list[int]:
     return seeds[:n] if n else seeds
 
 
+NOSUB = "@nosublane"  # suffix of baseline rows evaluated without the sub-lane model
+
+
 def _episode(task: tuple[str, str, int, int | None]) -> dict[str, Any]:
     key, regime, seed, episode_seconds = task
     import torch
 
     torch.set_num_threads(1)
-    controller = make_controller(key, regime)
-    out = run_episode(controller, regime, seed, episode_seconds=episode_seconds, keep_trips=True)
+    env_kwargs = {"sublane": False} if key.endswith(NOSUB) else None
+    controller = make_controller(key.removesuffix(NOSUB), regime)
+    out = run_episode(controller, regime, seed, episode_seconds=episode_seconds, keep_trips=True,
+                      env_kwargs=env_kwargs)  # fmt: skip
     row: dict[str, Any] = {"controller": key, "regime": regime, "seed": seed, **out["metrics"]}
     trips = out["trips"]
     row["_wait"] = trips["wait"].to_numpy(dtype=np.float32)
@@ -61,8 +66,11 @@ def evaluate(
     tag: str,
     episode_seconds: int | None = None,
     append: bool = False,
+    pairs: list[tuple[str, str]] | None = None,
 ) -> pd.DataFrame:
-    tasks = [(c, r, s, episode_seconds) for c in controllers for r in regimes for s in seeds]
+    """`pairs` overrides the controllers x regimes product with explicit (controller, regime)."""
+    pairs = pairs or [(c, r) for c in controllers for r in regimes]
+    tasks = [(c, r, s, episode_seconds) for c, r in pairs for s in seeds]
     rows: list[dict[str, Any]] = []
     waits: dict[tuple[str, str], list[tuple[np.ndarray, np.ndarray]]] = {}
     t0 = time.time()
@@ -97,8 +105,25 @@ def evaluate(
 
 
 def finished_jobs() -> list[str]:
-    runs = ROOT / "runs"
-    return sorted(p.parent.name for p in runs.glob("*/done.flag"))
+    """Trained jobs: finished runs plus checkpoints committed under results/models."""
+    names = {p.parent.name for p in (ROOT / "runs").glob("*/done.flag")}
+    names |= {p.stem.removeprefix("best_") for p in (ROOT / "results" / "models").glob("best_*.json")
+              if not p.stem.endswith(".result")}
+    return sorted(n for n in names if not n.startswith(("smoke", "sweep", "toy")))
+
+
+def agent_pairs(regimes: list[str]) -> list[tuple[str, str]]:
+    """Main-table agents are tested on every regime (generalisation); ablations on their own."""
+    from greenwave.jobs import JobSpec, find_checkpoint
+
+    pairs: list[tuple[str, str]] = []
+    for job in finished_jobs():
+        spec = JobSpec.load(find_checkpoint(job)[0])
+        if spec.group == "main":
+            pairs += [(job, r) for r in regimes]
+        elif spec.regime in regimes:
+            pairs.append((job, spec.regime))
+    return pairs
 
 
 def main() -> None:
@@ -112,20 +137,27 @@ def main() -> None:
     parser.add_argument("--episode-seconds", type=int, default=None)
     parser.add_argument("--tag", default=None)
     parser.add_argument("--append", action="store_true")
+    parser.add_argument("--no-sublane", action="store_true",
+                        help="baselines on the peak regime without the sub-lane model")  # fmt: skip
     args = parser.parse_args()
 
     controllers = list(args.controllers)
+    pairs: list[tuple[str, str]] | None = None
     tag = args.tag or "custom"
     if args.baselines:
         controllers += list(BASELINES)
         tag = args.tag or "baselines"
+    if args.no_sublane:
+        pairs = [(b + NOSUB, "peak") for b in BASELINES]
+        tag = args.tag or "baselines_nosublane"
     if args.agents:
-        controllers += [j for j in finished_jobs() if not j.startswith(("smoke", "sweep", "toy"))]
+        pairs = agent_pairs(args.regimes)
         tag = args.tag or "agents"
-    print(f"evaluating {len(controllers)} controllers x {len(args.regimes)} regimes")
+    n = len(pairs) if pairs else len(controllers) * len(args.regimes)
+    print(f"evaluating {n} (controller, regime) pairs x {len(eval_seeds(args.seeds))} seeds")
     episodes = evaluate(
         controllers, args.regimes, eval_seeds(args.seeds), args.workers, tag,
-        args.episode_seconds, args.append,
+        args.episode_seconds, args.append, pairs,
     )  # fmt: skip
     cols = ["veh_wait", "person_wait", "avg_queue", "throughput", "max_wait", "teleport_pct",
             "depart_delay", "pending"]  # fmt: skip

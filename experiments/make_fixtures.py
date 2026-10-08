@@ -24,7 +24,14 @@ from experiments.record_replay import SCENES, record_scene  # noqa: E402
 from greenwave.config import CLASSES, REGIMES, load_cfg  # noqa: E402
 from greenwave.netjson import network_json  # noqa: E402
 from greenwave.web_schema import (  # noqa: E402
-    AblationRow, Curve, FairnessEntry, Generalisation, MainRow, Meta, Network, PerClassRow,
+    AblationRow,
+    Curve,
+    FairnessEntry,
+    Generalisation,
+    MainRow,
+    Meta,
+    Network,
+    PerClassRow,
 )  # fmt: skip
 
 OUT = ROOT / "web" / "fixtures"
@@ -93,7 +100,7 @@ def main() -> None:
              "ecdf_y": q.round(3).tolist(), "p50": float(np.median(x)),
              "p95": float(np.quantile(x, 0.95)), "max": float(x.max())}  # fmt: skip
         FairnessEntry.model_validate(e)
-        fairness[key] = e
+        fairness[f"{key}@skewed"] = e
     dump("results/fairness.json", fairness)
 
     per_class = []

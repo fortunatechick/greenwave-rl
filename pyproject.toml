@@ -9,7 +9,7 @@ license = { text = "MIT" }
 include = ["greenwave*"]
 
 [tool.ruff]
-line-length = 112
+line-length = 120
 target-version = "py311"
 extend-exclude = ["web", ".venv", "runs", "results"]
 
@@ -19,6 +19,7 @@ ignore = ["B008"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["E501"]
+"report/fill.py" = ["E501"]  # prose templates
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

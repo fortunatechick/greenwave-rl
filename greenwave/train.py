@@ -79,6 +79,7 @@ def train_ddqn(spec: JobSpec) -> dict[str, float]:
 
     torch.set_num_threads(1)
     hp = dict(load_cfg()["train"]["ddqn"])
+    hp.update(spec.hp)
     hp["hidden"] = tuple(hp["hidden"])
     cfg = DDQNConfig(**hp, smdp_discount=spec.smdp_discount, base_dt=float(spec.delta or 5))
     run_dir = spec.run_dir
@@ -102,8 +103,10 @@ def train_ddqn(spec: JobSpec) -> dict[str, float]:
             obs = next_obs
             if step >= cfg.learning_starts and step % cfg.train_freq == 0:
                 loss = agent.update()
-            if step % cfg.target_update == 0:
+            if cfg.tau <= 0 and step % cfg.target_update == 0:
                 agent.sync_target()
+            if step % 500 == 0:
+                agent.set_progress(step / spec.steps)
             if step % 1000 == 0:
                 writer.add_scalar("train/loss", loss, step)
                 writer.add_scalar("train/epsilon", eps, step)

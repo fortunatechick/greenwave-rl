@@ -1,0 +1,55 @@
+{
+  "profile": "day",
+  "workers": 7,
+  "jobs": {
+    "sweep_l0.25_T120__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "running"
+    },
+    "sweep_l0.25_T60__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "running"
+    },
+    "sweep_l0.25_T90__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "running"
+    },
+    "sweep_l1_T120__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "running"
+    },
+    "sweep_l1_T60__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "done",
+      "minutes": 19.961928526560467,
+      "best_val_score": -0.06257795390305586
+    },
+    "sweep_l1_T90__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "running"
+    },
+    "sweep_l4_T120__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "done",
+      "minutes": 22.886896181106568,
+      "best_val_score": -0.018204486064728624
+    },
+    "sweep_l4_T60__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "running"
+    },
+    "sweep_l4_T90__s0": {
+      "steps": 30000,
+      "group": "sweep",
+      "state": "running"
+    }
+  }
+}

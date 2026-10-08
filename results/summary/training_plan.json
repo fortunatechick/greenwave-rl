@@ -1,0 +1,48 @@
+{
+  "profile": "day",
+  "scale": 1.0,
+  "dropped_questions": [],
+  "n_jobs": 58,
+  "total_steps": 3700000,
+  "cpu_hours": 32.39184254585626,
+  "wall_hours": 5.416429209172725,
+  "hours_budget": 7.0,
+  "workers": 7,
+  "speed": {
+    "steps_per_s": 54.719174159023375,
+    "episode_s": 5.939417123794556,
+    "steps_per_episode": 325.0
+  },
+  "slowdown": 1.35,
+  "options": {
+    "quick": {
+      "profile": "quick",
+      "scale": 1.0,
+      "dropped_questions": [],
+      "n_jobs": 30,
+      "total_steps": 363000,
+      "cpu_hours": 3.1038209333343376,
+      "wall_hours": 0.5394996610727066
+    },
+    "day": {
+      "profile": "day",
+      "scale": 1.0,
+      "dropped_questions": [],
+      "n_jobs": 58,
+      "total_steps": 3700000,
+      "cpu_hours": 32.39184254585626,
+      "wall_hours": 5.416429209172725
+    },
+    "full": {
+      "profile": "full",
+      "scale": 1.0,
+      "dropped_questions": [],
+      "n_jobs": 86,
+      "total_steps": 15005000,
+      "cpu_hours": 132.23579335498195,
+      "wall_hours": 20.901729580614813
+    }
+  },
+  "deviations": [],
+  "created": "2026-10-09T01:02:03"
+}
