@@ -1,0 +1,12 @@
+<additional>
+    <!-- Four mixed-traffic classes (spec 5.2). Sub-lane attributes only take effect when
+         SUMO runs with lateral-resolution; emission classes are SUMO's vClass defaults. -->
+    <vType id="two_wheeler" vClass="motorcycle" length="1.9" width="0.8" maxSpeed="16"
+           latAlignment="arbitrary" minGapLat="0.25" lcSublane="2" guiShape="motorcycle"/>
+    <vType id="auto_rickshaw" vClass="passenger" length="2.6" width="1.4" maxSpeed="12"
+           latAlignment="arbitrary" minGapLat="0.3" guiShape="passenger/hatchback"/>
+    <vType id="car" vClass="passenger" length="4.3" width="1.8" maxSpeed="16"
+           minGapLat="0.4" guiShape="passenger"/>
+    <vType id="bus" vClass="bus" length="12.0" width="2.5" maxSpeed="13"
+           latAlignment="center" guiShape="bus"/>
+</additional>

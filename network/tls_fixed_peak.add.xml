@@ -1,0 +1,12 @@
+<additional>
+<tlLogic id="J0" type="static" programID="fixed_peak" offset="0">
+    <phase duration="27" state="grrrgrrrrGGGGgrrrr"/>
+    <phase duration="3" state="grrrgrrrrgyyygrrrr"/>
+    <phase duration="27" state="grrrGGGGGgrrrgrrrr"/>
+    <phase duration="3" state="grrrgyyyygrrrgrrrr"/>
+    <phase duration="27" state="GGGGgrrrrgrrrgrrrr"/>
+    <phase duration="3" state="gyyygrrrrgrrrgrrrr"/>
+    <phase duration="27" state="grrrgrrrrgrrrGGGGG"/>
+    <phase duration="3" state="grrrgrrrrgrrrgyyyy"/>
+</tlLogic>
+</additional>

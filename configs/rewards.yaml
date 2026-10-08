@@ -1,0 +1,6 @@
+# Reward constants (spec Section 4.3).
+kappa: 100.0        # waiting-time scale
+kappa_q: 10.0       # queue / pressure scale (not fixed by the spec; see DECISIONS.md)
+lambda: 1.0         # fairness penalty weight
+T: 90.0             # fairness threshold, seconds
+default: fair

@@ -1,0 +1,37 @@
+# Experiment families. Each family is trained with the seed count and step budget of the
+# chosen compute profile (configs/profiles/*.yaml). Job name = <family>__s<seed>.
+
+sweep:                      # lambda x T tuning, run first (spec 4.3)
+  regime: skewed
+  lambdas: [0.25, 1.0, 4.0]
+  thresholds: [60, 90, 120]
+
+main:
+  - {family: ddqn_fair__peak, agent: ddqn, regime: peak}
+  - {family: ddqn_fair__skewed, agent: ddqn, regime: skewed}
+  - {family: ddqn_fair__surge, agent: ddqn, regime: surge}
+  - {family: ddqn_fair__low, agent: ddqn, regime: low}
+  - {family: ddqn_fair__dr, agent: ddqn, regime: dr}
+  - {family: dqn_sb3__peak, agent: dqn, regime: peak}
+  - {family: ppo__peak, agent: ppo, regime: peak}
+
+# Ablations use the ablation budget, so each is compared with a reference trained with
+# that same budget (abl_ref), not with the longer main runs.
+ablations:
+  - {family: abl_ref__peak, regime: peak, question: reference}
+  - {family: abl_ref__skewed, regime: skewed, question: reference}
+  - {family: abl_reward_wait__peak, reward: wait, question: reward}
+  - {family: abl_reward_queue__peak, reward: queue, question: reward}
+  - {family: abl_reward_pressure__peak, reward: pressure, question: reward}
+  - {family: abl_nofair__skewed, reward: passenger_nofair, regime: skewed, question: fairness}
+  - {family: abl_vehicle_fair__peak, reward: vehicle_fair, question: weighting}
+  - {family: abl_bus20__peak, bus_weight: 20, question: bus_weight}
+  - {family: abl_bus60__peak, bus_weight: 60, question: bus_weight}
+  - {family: abl_notimer__peak, obs_mask: [timer], question: state}
+  - {family: abl_nomaxwait__peak, obs_mask: [max_wait], question: state}
+  - {family: abl_delta10__peak, delta: 10, steps_scale: 0.7, question: interval}
+  - {family: abl_delta15__peak, delta: 15, steps_scale: 0.6, question: interval}
+  - {family: abl_nosublane__peak, sublane: false, question: sublane}
+
+# Cut-scope order if the day does not fit (spec Section 13).
+cut_order: [state, interval]

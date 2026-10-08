@@ -1,0 +1,7 @@
+﻿# One-day build (target profile).
+name: day
+main_steps: 100000
+ablation_steps: 50000
+sweep_steps: 30000
+seeds_main: 3
+seeds_ablation: 2

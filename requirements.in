@@ -1,0 +1,22 @@
+# Top-level dependencies. requirements.txt is the pinned freeze of this file.
+gymnasium
+stable-baselines3
+sb3-contrib
+torch
+eclipse-sumo
+traci
+libsumo
+sumolib
+numpy
+pandas
+scipy
+matplotlib
+seaborn
+pydantic
+pyyaml
+tensorboard
+streamlit
+pytest
+ruff
+pillow
+tqdm

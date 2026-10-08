@@ -1,0 +1,156 @@
+{
+  "synthetic_demand": true,
+  "mean_pcu_per_vehicle": 0.895,
+  "saturation_flows_pcu_h": {
+    "N": 3675.0,
+    "E": 5512.5,
+    "S": 3675.0,
+    "W": 5512.5
+  },
+  "regimes": {
+    "low": {
+      "pcu_per_hour": {
+        "N": 260.3,
+        "E": 390.5,
+        "S": 260.3,
+        "W": 390.5
+      },
+      "veh_per_hour_by_approach": {
+        "N": 290.8,
+        "E": 436.3,
+        "S": 290.8,
+        "W": 436.3
+      },
+      "veh_per_hour_by_class": {
+        "two_wheeler": 654.4,
+        "auto_rickshaw": 261.8,
+        "car": 436.3,
+        "bus": 101.8
+      },
+      "webster": {
+        "cycle": 52,
+        "greens": {
+          "N": 10,
+          "E": 10,
+          "S": 10,
+          "W": 10
+        },
+        "Y": 0.2833,
+        "saturation": {
+          "N": 0.46,
+          "E": 0.46,
+          "S": 0.46,
+          "W": 0.46
+        }
+      }
+    },
+    "peak": {
+      "pcu_per_hour": {
+        "N": 650.8,
+        "E": 976.2,
+        "S": 650.8,
+        "W": 976.2
+      },
+      "veh_per_hour_by_approach": {
+        "N": 727.1,
+        "E": 1090.7,
+        "S": 727.1,
+        "W": 1090.7
+      },
+      "veh_per_hour_by_class": {
+        "two_wheeler": 1636.0,
+        "auto_rickshaw": 654.4,
+        "car": 1090.7,
+        "bus": 254.5
+      },
+      "webster": {
+        "cycle": 120,
+        "greens": {
+          "N": 27,
+          "E": 27,
+          "S": 27,
+          "W": 27
+        },
+        "Y": 0.7083,
+        "saturation": {
+          "N": 0.85,
+          "E": 0.85,
+          "S": 0.85,
+          "W": 0.85
+        }
+      }
+    },
+    "skewed": {
+      "pcu_per_hour": {
+        "N": 390.5,
+        "E": 1561.9,
+        "S": 390.5,
+        "W": 585.7
+      },
+      "veh_per_hour_by_approach": {
+        "N": 436.3,
+        "E": 1745.1,
+        "S": 436.3,
+        "W": 654.4
+      },
+      "veh_per_hour_by_class": {
+        "two_wheeler": 1472.4,
+        "auto_rickshaw": 589.0,
+        "car": 981.6,
+        "bus": 229.0
+      },
+      "webster": {
+        "cycle": 88,
+        "greens": {
+          "N": 14,
+          "E": 34,
+          "S": 14,
+          "W": 14
+        },
+        "Y": 0.6021,
+        "saturation": {
+          "N": 0.779,
+          "E": 0.779,
+          "S": 0.779,
+          "W": 0.779
+        }
+      }
+    },
+    "surge": {
+      "pcu_per_hour": {
+        "N": 455.5,
+        "E": 976.2,
+        "S": 455.5,
+        "W": 683.3
+      },
+      "veh_per_hour_by_approach": {
+        "N": 509.0,
+        "E": 1090.7,
+        "S": 509.0,
+        "W": 763.5
+      },
+      "veh_per_hour_by_class": {
+        "two_wheeler": 1292.5,
+        "auto_rickshaw": 517.0,
+        "car": 861.6,
+        "bus": 201.0
+      },
+      "webster": {
+        "cycle": 78,
+        "greens": {
+          "N": 15,
+          "E": 21,
+          "S": 15,
+          "W": 15
+        },
+        "Y": 0.549,
+        "saturation": {
+          "N": 0.744,
+          "E": 0.727,
+          "S": 0.744,
+          "W": 0.744
+        }
+      }
+    }
+  }
+}

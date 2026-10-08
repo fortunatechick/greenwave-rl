@@ -1,0 +1,7 @@
+﻿# CI and smoke tests only.
+name: quick
+main_steps: 20000
+ablation_steps: 10000
+sweep_steps: 10000
+seeds_main: 1
+seeds_ablation: 1

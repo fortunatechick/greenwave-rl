@@ -1,0 +1,9 @@
+<additional>
+    <!-- Ablation "sub-lane model off": same dimensions, default lateral behaviour. -->
+    <vType id="two_wheeler" vClass="motorcycle" length="1.9" width="0.8" maxSpeed="16"
+           guiShape="motorcycle"/>
+    <vType id="auto_rickshaw" vClass="passenger" length="2.6" width="1.4" maxSpeed="12"
+           guiShape="passenger/hatchback"/>
+    <vType id="car" vClass="passenger" length="4.3" width="1.8" maxSpeed="16" guiShape="passenger"/>
+    <vType id="bus" vClass="bus" length="12.0" width="2.5" maxSpeed="13" guiShape="bus"/>
+</additional>

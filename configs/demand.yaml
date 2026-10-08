@@ -1,0 +1,33 @@
+# Demand assumptions (spec Sections 4.1, 4.3, 5.3). All synthetic unless demand/counts.csv
+# is replaced by field counts.
+classes: [two_wheeler, auto_rickshaw, car, bus]
+codes: {two_wheeler: tw, auto_rickshaw: au, car: car, bus: bus}
+
+# Share of vehicles by count.
+class_mix: {two_wheeler: 0.45, car: 0.30, auto_rickshaw: 0.18, bus: 0.07}
+turn_split: {left: 0.25, through: 0.55, right: 0.20}
+
+# IRC:106-1990 style passenger car units (assumption).
+pcu: {two_wheeler: 0.5, car: 1.0, auto_rickshaw: 1.2, bus: 2.2}
+# Average occupancy per vehicle (assumption; bus tested at 20 / 40 / 60).
+passenger_weights: {two_wheeler: 1.5, car: 2.0, auto_rickshaw: 2.5, bus: 40.0}
+
+# Peak calibration: Webster degree of saturation ~ target, major approaches carry
+# major_ratio times the PCU flow of minor approaches.
+target_saturation: 0.85
+major_approaches: [E, W]
+major_ratio: 1.5
+saturation_flow_per_m: 525     # PCU/h per metre of approach width (IRC-style)
+peak_scale: 1.0                # global multiplier; lowered by the Phase 1 fallback if needed
+
+regimes:
+  low: {scale: 0.4}
+  peak: {scale: 1.0}
+  skewed: {scale: 0.6, boosted: {E: 1.6}}
+  surge: {scale: 0.7, burst: {approach: E, begin: 1500, end: 2100, scale: 2.5}}
+
+dr_pool:
+  size: 200
+  low: 0.5
+  high: 1.5
+  seed: 12345

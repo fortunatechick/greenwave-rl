@@ -1,0 +1,20 @@
+# Simulation and signal-timing constants (spec Sections 3, 4, 5.4).
+step_length: 1.0
+decision_interval: 5        # delta, seconds
+min_green: 10
+yellow: 3
+all_red: 0
+max_green: 60
+episode_seconds: 3600
+waiting_time_memory: 3600
+time_to_teleport: 300
+lateral_resolution: 0.8
+sublane: true
+startup_loss: 2.0           # s per phase, used by Webster only
+
+seeds:
+  train: [0, 899]           # sampled per training episode
+  validation: [900, 901]    # used for checkpoint selection during training
+  selection: [902, 906]     # used to pick lambda and T from the sweep
+  eval: [1000, 1009]        # never seen in training
+  replay: 1000

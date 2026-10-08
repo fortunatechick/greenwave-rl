@@ -1,0 +1,11 @@
+# Junction geometry. Chosen in Phase 0: generic plain-XML 4-arm junction (Path B).
+name: "Generic 4-arm junction (plain XML)"
+bbox: null                       # [west, south, east, north] enables the OSM path
+approaches: [N, E, S, W]         # cycle order
+lanes_in: {N: 2, E: 3, S: 2, W: 3}
+lanes_out: {N: 2, E: 3, S: 2, W: 3}
+approach_length_m: 250
+lane_width_m: 3.5
+speed_limit_mps: 13.89
+free_left: true
+tls_id: J0
