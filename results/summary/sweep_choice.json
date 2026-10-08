@@ -1,0 +1,96 @@
+{
+  "chosen": {
+    "lam": 4.0,
+    "T": 90.0,
+    "person_wait": 13.272490494912166,
+    "max_wait": 74.0
+  },
+  "rule": "lowest person delay among settings with max wait <= 1.2 T",
+  "seeds": [
+    902,
+    906
+  ],
+  "table": [
+    {
+      "job": "sweep_l0.25_T120__s0",
+      "lam": 0.25,
+      "T": 120.0,
+      "person_wait": 13.821,
+      "max_wait": 184.2,
+      "veh_wait": 14.72,
+      "feasible": false
+    },
+    {
+      "job": "sweep_l0.25_T60__s0",
+      "lam": 0.25,
+      "T": 60.0,
+      "person_wait": 13.604,
+      "max_wait": 85.6,
+      "veh_wait": 13.66,
+      "feasible": false
+    },
+    {
+      "job": "sweep_l0.25_T90__s0",
+      "lam": 0.25,
+      "T": 90.0,
+      "person_wait": 36.665,
+      "max_wait": 421.0,
+      "veh_wait": 38.463,
+      "feasible": false
+    },
+    {
+      "job": "sweep_l1_T120__s0",
+      "lam": 1.0,
+      "T": 120.0,
+      "person_wait": 15.705,
+      "max_wait": 128.8,
+      "veh_wait": 15.356,
+      "feasible": true
+    },
+    {
+      "job": "sweep_l1_T60__s0",
+      "lam": 1.0,
+      "T": 60.0,
+      "person_wait": 14.395,
+      "max_wait": 125.2,
+      "veh_wait": 14.873,
+      "feasible": false
+    },
+    {
+      "job": "sweep_l1_T90__s0",
+      "lam": 1.0,
+      "T": 90.0,
+      "person_wait": 26.218,
+      "max_wait": 261.4,
+      "veh_wait": 27.409,
+      "feasible": false
+    },
+    {
+      "job": "sweep_l4_T120__s0",
+      "lam": 4.0,
+      "T": 120.0,
+      "person_wait": 14.721,
+      "max_wait": 77.0,
+      "veh_wait": 14.675,
+      "feasible": true
+    },
+    {
+      "job": "sweep_l4_T60__s0",
+      "lam": 4.0,
+      "T": 60.0,
+      "person_wait": 18.826,
+      "max_wait": 169.4,
+      "veh_wait": 19.874,
+      "feasible": false
+    },
+    {
+      "job": "sweep_l4_T90__s0",
+      "lam": 4.0,
+      "T": 90.0,
+      "person_wait": 13.272,
+      "max_wait": 74.0,
+      "veh_wait": 13.658,
+      "feasible": true
+    }
+  ]
+}

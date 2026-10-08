@@ -32,5 +32,66 @@
 ## Training queue
 
 <!-- queue:start -->
-Stopped at 01:30 for the stability diagnostics. To be relaunched.
+Profile `day` - updated 2026-10-09 02:31 - 9 done, 42 pending, 7 running
+
+| Job | State | Steps | Minutes | Best validation score |
+| --- | --- | --- | --- | --- |
+| sweep_l0.25_T120__s0 | done | 30000 | 15.7 | -0.1021 |
+| sweep_l0.25_T60__s0 | done | 30000 | 15.4 | -0.1028 |
+| sweep_l0.25_T90__s0 | done | 30000 | 14.9 | -0.1013 |
+| sweep_l1_T120__s0 | done | 30000 | 14.4 | -0.0994 |
+| sweep_l1_T60__s0 | done | 30000 | 15.6 | -0.0972 |
+| sweep_l1_T90__s0 | done | 30000 | 15.7 | -0.1131 |
+| sweep_l4_T120__s0 | done | 30000 | 15.5 | -0.0994 |
+| sweep_l4_T60__s0 | done | 30000 | 9.6 | -0.1198 |
+| sweep_l4_T90__s0 | done | 30000 | 8.8 | -0.0943 |
+| ddqn_fair__peak__s0 | running | 100000 |  |  |
+| ddqn_fair__peak__s1 | running | 100000 |  |  |
+| ddqn_fair__peak__s2 | running | 100000 |  |  |
+| ddqn_fair__low__s0 | running | 100000 |  |  |
+| ddqn_fair__skewed__s0 | running | 100000 |  |  |
+| ddqn_fair__surge__s0 | running | 100000 |  |  |
+| ddqn_fair__low__s1 | running | 100000 |  |  |
+| ddqn_fair__skewed__s1 | pending | 100000 |  |  |
+| ddqn_fair__surge__s1 | pending | 100000 |  |  |
+| ddqn_fair__low__s2 | pending | 100000 |  |  |
+| ddqn_fair__skewed__s2 | pending | 100000 |  |  |
+| ddqn_fair__surge__s2 | pending | 100000 |  |  |
+| ddqn_fair__dr__s0 | pending | 100000 |  |  |
+| ddqn_fair__dr__s1 | pending | 100000 |  |  |
+| ddqn_fair__dr__s2 | pending | 100000 |  |  |
+| dqn_sb3__peak__s0 | pending | 100000 |  |  |
+| ppo__peak__s0 | pending | 100000 |  |  |
+| dqn_sb3__peak__s1 | pending | 100000 |  |  |
+| ppo__peak__s1 | pending | 100000 |  |  |
+| dqn_sb3__peak__s2 | pending | 100000 |  |  |
+| ppo__peak__s2 | pending | 100000 |  |  |
+| abl_bus20__peak__s0 | pending | 50000 |  |  |
+| abl_bus60__peak__s0 | pending | 50000 |  |  |
+| abl_delta10__peak__s0 | pending | 35000 |  |  |
+| abl_delta15__peak__s0 | pending | 30000 |  |  |
+| abl_nofair__skewed__s0 | pending | 50000 |  |  |
+| abl_nomaxwait__peak__s0 | pending | 50000 |  |  |
+| abl_nosublane__peak__s0 | pending | 50000 |  |  |
+| abl_notimer__peak__s0 | pending | 50000 |  |  |
+| abl_ref__peak__s0 | pending | 50000 |  |  |
+| abl_ref__skewed__s0 | pending | 50000 |  |  |
+| abl_reward_pressure__peak__s0 | pending | 50000 |  |  |
+| abl_reward_queue__peak__s0 | pending | 50000 |  |  |
+| abl_reward_wait__peak__s0 | pending | 50000 |  |  |
+| abl_vehicle_fair__peak__s0 | pending | 50000 |  |  |
+| abl_bus20__peak__s1 | pending | 50000 |  |  |
+| abl_bus60__peak__s1 | pending | 50000 |  |  |
+| abl_delta10__peak__s1 | pending | 35000 |  |  |
+| abl_delta15__peak__s1 | pending | 30000 |  |  |
+| abl_nofair__skewed__s1 | pending | 50000 |  |  |
+| abl_nomaxwait__peak__s1 | pending | 50000 |  |  |
+| abl_nosublane__peak__s1 | pending | 50000 |  |  |
+| abl_notimer__peak__s1 | pending | 50000 |  |  |
+| abl_ref__peak__s1 | pending | 50000 |  |  |
+| abl_ref__skewed__s1 | pending | 50000 |  |  |
+| abl_reward_pressure__peak__s1 | pending | 50000 |  |  |
+| abl_reward_queue__peak__s1 | pending | 50000 |  |  |
+| abl_reward_wait__peak__s1 | pending | 50000 |  |  |
+| abl_vehicle_fair__peak__s1 | pending | 50000 |  |  |
 <!-- queue:end -->

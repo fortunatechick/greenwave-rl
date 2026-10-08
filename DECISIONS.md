@@ -94,3 +94,9 @@ Every choice that departs from, or fills a gap in, `GREENWAVE_BUILD.md`. Entries
   seeds. Welch tests therefore compare 10 values against 10.
 - **Effect:** the reported spread is across traffic seeds; spread across training seeds is
   shown separately by the learning-curve bands.
+
+### 2026-10-09 02:26 - lambda / T sweep
+- **What:** 9 short Double DQN runs on the skewed regime, lambda in {0.25, 1, 4} x T in {60, 90, 120}, scored on selection seeds 902-906.
+- **Chosen:** lambda = 4, T = 90 s (person wait 13.3 s, max wait 74 s).
+- **Rule applied:** lowest person delay among settings with max wait <= 1.2 T.
+- **Effect:** every main and ablation run uses these values.
