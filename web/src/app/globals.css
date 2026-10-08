@@ -1,26 +1,205 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Design tokens: "control room at night". Dark is the default; light overrides follow.
+   Signal colours carry meaning only (signal state, better / worse), never decoration. */
+:root,
+[data-theme="dark"] {
+  --bg: #0a0c0f;
+  --surface-1: #111419;
+  --surface-2: #181c22;
+  --line: #252a32;
+  --text: #e8eaed;
+  --muted: #8a93a0;
+  --go: #3ddc84;
+  --amber: #ffb020;
+  --stop: #ff4d4f;
+  --wave-a: #3ddc84;
+  --wave-b: #2bd4c8;
+  --veh-2w: #7dd3fc;
+  --veh-auto: #fde047;
+  --veh-car: #cbd5e1;
+  --veh-bus: #c4b5fd;
+  --road: #1b2027;
+  --road-line: #343b46;
+  --grid: rgba(255, 255, 255, 0.028);
+  --scrim: 10, 12, 15;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f6f7f9;
+  --surface-1: #ffffff;
+  --surface-2: #eef0f3;
+  --line: #dadde3;
+  --text: #0f1216;
+  --muted: #5b6370;
+  --go: #0b7a41;
+  --amber: #8f5b00;
+  --stop: #c32224;
+  --wave-a: #0b7a41;
+  --wave-b: #0f766e;
+  --veh-2w: #0284c7;
+  --veh-auto: #a16207;
+  --veh-car: #475569;
+  --veh-bus: #6d28d9;
+  --road: #d9dde3;
+  --road-line: #f6f7f9;
+  --grid: rgba(15, 18, 22, 0.04);
+  --scrim: 246, 247, 249;
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-go: var(--go);
+  --color-amber: var(--amber);
+  --color-stop: var(--stop);
+  --color-wave-a: var(--wave-a);
+  --color-wave-b: var(--wave-b);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --radius-card: 14px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  /* faint 24 px blueprint grid */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--text);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* subtle noise overlay at 3 % */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+main,
+header,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Grid and flex children default to min-width: auto, which lets a wide table or formula
+   push the page sideways; they must shrink and scroll inside their own card instead. */
+main :where(.grid, .flex) > * {
+  min-width: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--wave-b);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.wave-text {
+  background: linear-gradient(90deg, var(--wave-a), var(--wave-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card {
+  position: relative; /* contains absolutely positioned sr-only labels inside scrolling tables */
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+}
+
+.card-focus:hover,
+.card-focus:focus-within {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wave-b) 45%, transparent);
+}
+
+.display {
+  font-size: clamp(2.6rem, 1.2rem + 6vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.h2 {
+  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.prose-block p + p {
+  margin-top: 0.9em;
+}
+
+.katex-display {
+  margin: 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 400ms ease,
+    transform 400ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes phase-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--go) 60%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+.phase-pulse {
+  animation: phase-pulse 600ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .phase-pulse {
+    animation: none;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }

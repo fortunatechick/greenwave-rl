@@ -43,6 +43,7 @@ class TlsLayout:
     all_red: str = ""
     movements: list[list[tuple[int, int]]] = field(default_factory=list)
     through_link: list[int] = field(default_factory=list)
+    center: tuple[float, float] = (0.0, 0.0)  # junction centre in network coordinates
 
     @property
     def n_phases(self) -> int:
@@ -94,6 +95,7 @@ def read_layout(
         out_lane_approach=[order[ln.getEdge().getID().split("_")[0]] for ln in out_lanes],
         lane_length=[float(ln.getLength()) for ln in in_lanes],
         links=links,
+        center=tuple(float(v) for v in net.getNode(tls_id).getCoord()[:2]),
     )
 
     def state(active: int | None, colour: str) -> str:

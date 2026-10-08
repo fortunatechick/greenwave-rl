@@ -27,7 +27,7 @@
 ## Training queue
 
 <!-- queue:start -->
-Profile `day` - updated 2026-10-09 01:05 - 2 pending, 7 running
+Profile `day` - updated 2026-10-09 01:27 - 1 done, 1 pending, 7 running
 
 | Job | State | Steps | Minutes | Best validation score |
 | --- | --- | --- | --- | --- |
@@ -35,9 +35,9 @@ Profile `day` - updated 2026-10-09 01:05 - 2 pending, 7 running
 | sweep_l0.25_T60__s0 | running | 30000 |  |  |
 | sweep_l0.25_T90__s0 | running | 30000 |  |  |
 | sweep_l1_T120__s0 | running | 30000 |  |  |
-| sweep_l1_T60__s0 | running | 30000 |  |  |
+| sweep_l1_T60__s0 | done | 30000 | 20.0 | -0.0626 |
 | sweep_l1_T90__s0 | running | 30000 |  |  |
 | sweep_l4_T120__s0 | running | 30000 |  |  |
-| sweep_l4_T60__s0 | pending | 30000 |  |  |
+| sweep_l4_T60__s0 | running | 30000 |  |  |
 | sweep_l4_T90__s0 | pending | 30000 |  |  |
 <!-- queue:end -->

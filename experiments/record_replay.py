@@ -114,8 +114,10 @@ class Recorder:
             return
         veh, lane = env.api.vehicle, env.api.lane
         frame: list[int] = []
+        cx, cy = env.layout.center
         for vid in veh.getIDList():
             x, y = veh.getPosition(vid)
+            x, y = x - cx, y - cy
             if abs(x) > VIEW_HALF_M or abs(y) > VIEW_HALF_M:
                 continue
             idx = self.index.get(vid)
