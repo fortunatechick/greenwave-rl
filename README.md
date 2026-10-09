@@ -131,7 +131,7 @@ camera-based state estimation, pedestrian phases.
 ```bibtex
 @misc{greenwave_rl_2026,
   title  = {GreenWave-RL: Fairness-Aware Deep Reinforcement Learning for Adaptive Signal Control under Mixed Indian Traffic},
-  author = {Chaudhari, Om},
+  author = {{GreenWave-RL authors}},
   year   = {2026},
   note   = {Course project, Artificial Intelligence, B.Tech Computer Engineering}
 }
