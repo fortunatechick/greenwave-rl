@@ -42,6 +42,7 @@ TARGETS: dict[str, list[Step | str]] = {
         py("experiments/evaluate.py", "--agents"),
         py("experiments/generalisation.py"),
         py("experiments/ablations.py"),
+        py("experiments/corridor_estimate.py"),
     ],
     "figures": [py("experiments/figures.py")],
     "replays": [py("experiments/record_replay.py")],

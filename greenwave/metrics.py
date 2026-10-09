@@ -34,6 +34,7 @@ def parse_tripinfo(path: str | Path) -> pd.DataFrame:
             (
                 vid,
                 parts[0],
+                parts[1],
                 CODE_INDEX[parts[2]],
                 float(el.get("depart", "0")),
                 float(el.get("arrival", "-1")),
@@ -46,7 +47,7 @@ def parse_tripinfo(path: str | Path) -> pd.DataFrame:
         el.clear()
     return pd.DataFrame(
         rows,
-        columns=["id", "approach", "cls", "depart", "arrival", "wait", "time_loss",
+        columns=["id", "approach", "dest", "cls", "depart", "arrival", "wait", "time_loss",
                  "depart_delay", "co2_mg"],
     )  # fmt: skip
 

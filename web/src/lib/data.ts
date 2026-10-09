@@ -2,6 +2,7 @@
 // here with zod and passed down as props, so neither zod nor the raw files reach the client.
 import ablationsJson from "../../public/data/results/ablations.json";
 import curvesJson from "../../public/data/results/curves.json";
+import corridorJson from "../../public/data/corridor.json";
 import demandJson from "../../public/data/demand.json";
 import fairnessJson from "../../public/data/results/fairness.json";
 import generalisationJson from "../../public/data/results/generalisation.json";
@@ -12,6 +13,7 @@ import perClassJson from "../../public/data/results/per_class.json";
 import {
   AblationsSchema,
   CurvesSchema,
+  CorridorSchema,
   DemandSchema,
   FairnessSchema,
   GeneralisationSchema,
@@ -25,6 +27,7 @@ import type { MainRow } from "./types";
 export const meta = MetaSchema.parse(metaJson);
 export const network = NetworkSchema.parse(networkJson);
 export const demand = DemandSchema.parse(demandJson);
+export const corridor = CorridorSchema.parse(corridorJson);
 export const main = MainSchema.parse(mainJson);
 export const curves = CurvesSchema.parse(curvesJson);
 export const generalisation = GeneralisationSchema.parse(generalisationJson);

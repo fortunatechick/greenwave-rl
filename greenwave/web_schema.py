@@ -137,6 +137,7 @@ class Series(Strict):
     queue_by_approach: list[list[int]]
     person_wait_cum: list[float]
     max_wait: list[float]
+    max_wait_by_approach: list[list[int]]  # longest wait on each approach, cycle order
 
 
 class ReplaySide(Strict):
@@ -171,4 +172,33 @@ class Replay(Strict):
     classes: list[str]
     events: list[ReplayEvent]
     sides: dict[Literal["left", "right"], ReplaySide]
+    mock: bool = False
+
+
+class CorridorRoad(Strict):
+    left_delay_s: float
+    right_delay_s: float
+    left_trip_s: float
+    right_trip_s: float
+    saved_s: float
+    saved_std_s: float
+    n_seeds: int
+
+
+class CorridorScene(Strict):
+    regime: str
+    left: str
+    right: str
+    roads: dict[Literal["major", "minor"], CorridorRoad]
+
+
+class Corridor(Strict):
+    """Back-of-envelope corridor comparison (experiments/corridor_estimate.py)."""
+
+    length_km: float
+    signals: int
+    speed_kmh: float
+    free_flow_s: float
+    vehicle: str
+    scenes: dict[str, CorridorScene]
     mock: bool = False

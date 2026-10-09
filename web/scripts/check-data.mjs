@@ -38,7 +38,7 @@ function check(rel, schema) {
 let mock = false;
 for (const [rel, schema] of Object.entries(FILES)) {
   const data = check(rel, schema);
-  if (rel === "meta.json" && data) mock = data.mock;
+  if ((rel === "meta.json" || rel === "corridor.json") && data?.mock) mock = true;
 }
 for (const scene of SCENES) {
   const replay = check(`replays/${scene}.json`, ReplaySchema);

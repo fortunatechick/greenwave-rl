@@ -143,6 +143,34 @@ export const DemandSchema = z.strictObject({
   classes: z.array(z.string()),
 });
 
+const CorridorRoadSchema = z.strictObject({
+  left_delay_s: num,
+  right_delay_s: num,
+  left_trip_s: num,
+  right_trip_s: num,
+  saved_s: num,
+  saved_std_s: num,
+  n_seeds: z.number().int(),
+});
+
+export const CorridorSchema = z.strictObject({
+  length_km: num,
+  signals: z.number().int(),
+  speed_kmh: num,
+  free_flow_s: num,
+  vehicle: z.string(),
+  scenes: z.record(
+    z.string(),
+    z.strictObject({
+      regime: z.string(),
+      left: z.string(),
+      right: z.string(),
+      roads: z.strictObject({ major: CorridorRoadSchema, minor: CorridorRoadSchema }),
+    }),
+  ),
+  mock: z.boolean(),
+});
+
 const SideSchema = z.strictObject({
   veh_class: z.array(z.number().int().min(0).max(3)),
   frames: z.array(z.array(z.number().int())),
@@ -153,6 +181,7 @@ const SideSchema = z.strictObject({
     queue_by_approach: z.array(z.array(z.number().int())),
     person_wait_cum: z.array(num),
     max_wait: z.array(num),
+    max_wait_by_approach: z.array(z.array(z.number().int())),
   }),
 });
 
@@ -194,6 +223,7 @@ export const FILES = {
   "meta.json": MetaSchema,
   "network.json": NetworkSchema,
   "demand.json": DemandSchema,
+  "corridor.json": CorridorSchema,
   "results/main.json": MainSchema,
   "results/curves.json": CurvesSchema,
   "results/generalisation.json": GeneralisationSchema,

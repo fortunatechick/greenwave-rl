@@ -106,6 +106,7 @@ class Recorder:
         self.queue: list[list[int]] = []
         self.person_cum: list[float] = []
         self.max_wait: list[float] = []
+        self.max_wait_by_approach: list[list[int]] = []
         self.weights = np.asarray(class_vector(load_cfg()["demand"]["passenger_weights"]))
         self._person_seconds = 0.0
 
@@ -130,15 +131,18 @@ class Recorder:
         self.phase.append(int(env.phase))
 
         queue = [0] * env.n_app
+        longest = [0.0] * env.n_app
         waits: list[float] = []
         for li, ln in enumerate(env.layout.in_lanes):
             a = env.layout.lane_approach[li]
             for vid in lane.getLastStepVehicleIDs(ln):
                 waits.append(veh.getAccumulatedWaitingTime(vid))
+                longest[a] = max(longest[a], waits[-1])
                 if veh.getSpeed(vid) < HALT_SPEED:
                     queue[a] += 1
                     self._person_seconds += self.weights[CODE_INDEX[vid.split("-")[2]]]
         self.queue.append(queue)
+        self.max_wait_by_approach.append([int(round(w)) for w in longest])
         self.wait_now.append(round(float(np.mean(waits)) if waits else 0.0, 1))
         self.max_wait.append(round(float(max(waits)) if waits else 0.0, 1))
         self.person_cum.append(round(self._person_seconds / 60.0, 1))  # person-minutes
@@ -154,6 +158,7 @@ class Recorder:
                 "queue_by_approach": self.queue,
                 "person_wait_cum": self.person_cum,
                 "max_wait": self.max_wait,
+                "max_wait_by_approach": self.max_wait_by_approach,
             },
         }
 

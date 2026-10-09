@@ -44,6 +44,7 @@ from greenwave.netjson import network_json  # noqa: E402
 from greenwave.plan import sweep_choice  # noqa: E402
 from greenwave.web_schema import (  # noqa: E402
     AblationRow,
+    Corridor,
     Curve,
     FairnessEntry,
     Generalisation,
@@ -298,6 +299,13 @@ def main() -> None:
     for r in ablations:
         AblationRow.model_validate(r)
     dump("results/ablations.json", ablations)
+
+    corridor_path = SUMMARY / "corridor.json"
+    if not corridor_path.exists():
+        sys.exit("results/summary/corridor.json missing: run experiments/corridor_estimate.py first")
+    corridor = {**json.loads(corridor_path.read_text(encoding="utf-8")), "mock": False}
+    Corridor.model_validate(corridor)
+    dump("corridor.json", corridor)
 
     net = network_json()
     Network.model_validate(net)

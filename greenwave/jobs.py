@@ -81,7 +81,8 @@ def family_jobs(family: str) -> list[str]:
     """Finished or committed training seeds of a family, e.g. ddqn_fair__peak__s0..s2."""
     names = {p.parent.name for p in (ROOT / "runs").glob(f"{family}__s*/done.flag")}
     for p in (ROOT / "results" / "models").glob(f"best_{family}__s*.json"):
-        names.add(p.stem.removeprefix("best_"))
+        if not p.stem.endswith(".result"):
+            names.add(p.stem.removeprefix("best_"))
     return sorted(names)
 
 

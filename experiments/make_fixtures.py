@@ -138,6 +138,15 @@ def main() -> None:
                          "passenger_weights": cfg["demand"]["passenger_weights"],
                          "class_mix": cfg["demand"]["class_mix"], "classes": list(CLASSES)})  # fmt: skip
 
+    road = {"left_delay_s": 30.0, "right_delay_s": 20.0, "left_trip_s": 3900.0, "right_trip_s": 3800.0,
+            "saved_s": 100.0, "saved_std_s": 20.0, "n_seeds": 10}  # fmt: skip
+    dump("corridor.json", {
+        "length_km": 100.0, "signals": 10, "speed_kmh": 100.0, "free_flow_s": 3600.0, "mock": True,
+        "vehicle": "car, straight through",
+        "scenes": {name: {"regime": "peak", "left": "fixed_peak", "right": "max_pressure",
+                           "roads": {"major": road, "minor": road}} for name in SCENES},
+    })  # fmt: skip
+
     meta = {
         "mock": True, "profile": "fixture", "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "git_sha": "fixture", "synthetic_demand": True, "junction_name": cfg["junction"]["name"],

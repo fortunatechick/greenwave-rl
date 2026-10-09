@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { clock, fmt } from "@/lib/format";
 import { SPEEDS, loadReplay, useArena } from "@/lib/replay/store";
-import type { Network, Replay, ReplaySide } from "@/lib/types";
+import type { Corridor, Network, Replay, ReplaySide } from "@/lib/types";
 import { CLASS_LABEL } from "@/lib/types";
 import { ReplayCanvas } from "./ReplayCanvas";
 
@@ -44,24 +44,116 @@ function phaseAge(side: ReplaySide, second: number): number {
   return age;
 }
 
+// Where each approach's chip sits on the canvas: the N arm is at the top, E on the right.
+const ARM_POSITION: Record<string, string> = {
+  N: "left-1/2 top-2 -translate-x-1/2",
+  S: "bottom-2 left-1/2 -translate-x-1/2",
+  W: "left-2 top-1/2 -translate-y-1/2",
+  E: "right-2 top-1/2 -translate-y-1/2",
+};
+const ARM_NAME: Record<string, string> = { N: "top road", E: "right road", S: "bottom road", W: "left road" };
+
+/** Current green, plus the longest wait on each of the four approaches, drawn beside its arm. */
 function Hud({ side, second, approaches, T }: { side: ReplaySide; second: number; approaches: string[]; T: number }) {
-  const maxWait = side.series.max_wait[second] ?? 0;
+  const waits = side.series.max_wait_by_approach[second] ?? [];
   const phase = side.phase[second] ?? 0;
-  const tone = maxWait > 1.5 * T ? "text-stop" : maxWait > T ? "text-amber" : "text-text";
+  const worst = Math.max(...waits, 0);
   return (
-    <div className="pointer-events-none absolute inset-x-2 top-2 flex flex-wrap items-start justify-between gap-2 text-[11px] sm:text-xs">
-      <div className="rounded-md border border-line bg-bg/80 px-2 py-1 backdrop-blur">
+    <div className="pointer-events-none absolute inset-0 text-[11px] sm:text-xs">
+      <div className="absolute left-2 top-2 rounded-md border border-line bg-bg/80 px-2 py-1 backdrop-blur">
         <span className="text-muted">Green </span>
         <span key={phase} className="num phase-pulse inline-block rounded-sm px-1 font-semibold">
           {approaches[phase]}
         </span>
         <span className="num text-muted"> · {phaseAge(side, second)} s</span>
       </div>
-      <div className="rounded-md border border-line bg-bg/80 px-2 py-1 backdrop-blur">
-        <span className="text-muted">Longest wait </span>
-        <span className={`num font-semibold ${tone}`}>{fmt(maxWait, 0)} s</span>
-      </div>
+      {approaches.map((a, i) => {
+        const wait = waits[i] ?? 0;
+        const tone = wait > 1.5 * T ? "text-stop" : wait > T ? "text-amber" : "text-text";
+        return (
+          <div
+            key={a}
+            title={`Longest wait on the ${ARM_NAME[a] ?? a} (${a})`}
+            className={`absolute rounded-md border bg-bg/80 px-1.5 py-0.5 backdrop-blur ${ARM_POSITION[a] ?? ""} ${
+              wait === worst && worst > 0 ? "border-text/50" : "border-line"
+            }`}
+          >
+            <span className="num text-muted">{a} </span>
+            <span className={`num font-semibold ${tone}`}>{fmt(wait, 0)} s</span>
+          </div>
+        );
+      })}
     </div>
+  );
+}
+
+function tripClock(seconds: number): string {
+  const s = Math.round(seconds);
+  return `${Math.floor(s / 3600)} h ${String(Math.floor((s % 3600) / 60)).padStart(2, "0")} min ${String(s % 60).padStart(2, "0")} s`;
+}
+
+/** The 100 km / 10 signal thought experiment for the two controllers of the current scene. */
+function CorridorCard({ corridor, scene, replay }: { corridor: Corridor; scene: string; replay: Replay }) {
+  const entry = corridor.scenes[scene];
+  if (!entry) return null;
+  const rows = [
+    ["major", "Along the major road (E–W)"],
+    ["minor", "Along the minor road (N–S)"],
+  ] as const;
+  return (
+    <section className="card p-4 sm:p-5" aria-labelledby="corridor-title">
+      <h3 id="corridor-title" className="text-sm font-medium">
+        If this junction were repeated along a {fmt(corridor.length_km, 0)} km road
+      </h3>
+      <p className="mt-1 max-w-3xl text-xs leading-relaxed text-muted">
+        A straight {fmt(corridor.length_km, 0)} km road with {corridor.signals} signals, one every{" "}
+        {fmt(corridor.length_km / corridor.signals, 0)} km, capped at {fmt(corridor.speed_kmh, 0)} km/h. With every light
+        green the drive takes {tripClock(corridor.free_flow_s)}. Each signal then adds the delay a car going straight
+        through met at this junction, averaged over {entry.roads.major.n_seeds} evaluation runs of the {entry.regime}{" "}
+        regime.
+      </p>
+      <div className="mt-3 overflow-x-auto">
+        <table className="w-full min-w-[560px] text-left text-sm">
+          <thead>
+            <tr className="border-b border-line text-xs uppercase tracking-wider text-muted">
+              <th scope="col" className="py-2 pr-3 font-medium">Direction of travel</th>
+              <th scope="col" className="px-2 py-2 text-right font-medium">Left: {replay.left.label}</th>
+              <th scope="col" className="px-2 py-2 text-right font-medium">Right: {replay.right.label}</th>
+              <th scope="col" className="py-2 pl-2 text-right font-medium">Time saved by the right side</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(([key, label]) => {
+              const r = entry.roads[key];
+              const tone = Math.abs(r.saved_s) < 0.5 ? "text-text" : r.saved_s > 0 ? "text-go" : "text-stop";
+              return (
+                <tr key={key} className="border-b border-line/60 last:border-0">
+                  <th scope="row" className="py-2 pr-3 font-medium">{label}</th>
+                  <td className="num whitespace-nowrap px-2 py-2 text-right">
+                    {tripClock(r.left_trip_s)}
+                    <span className="block text-xs text-muted">{fmt(r.left_delay_s)} s per signal</span>
+                  </td>
+                  <td className="num whitespace-nowrap px-2 py-2 text-right">
+                    {tripClock(r.right_trip_s)}
+                    <span className="block text-xs text-muted">{fmt(r.right_delay_s)} s per signal</span>
+                  </td>
+                  <td className={`num whitespace-nowrap py-2 pl-2 text-right font-semibold ${tone}`}>
+                    {r.saved_s >= 0 ? "" : "−"}
+                    {fmt(Math.abs(r.saved_s), 0)} s
+                    <span className="block text-xs font-normal text-muted">± {fmt(r.saved_std_s, 0)} s across runs</span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-3 text-xs leading-relaxed text-muted">
+        A negative saving means the right side is slower. This is arithmetic on measured delays, not a simulation of a
+        corridor: the signals are assumed independent and uncoordinated, and the per-signal delay was measured at this
+        junction&apos;s 50 km/h limit{corridor.mock ? " (preview numbers)" : ""}.
+      </p>
+    </section>
   );
 }
 
@@ -118,7 +210,7 @@ export function ClassLegend() {
   );
 }
 
-export function Arena({ network, scenes, T }: { network: Network; scenes: SceneInfo[]; T: number }) {
+export function Arena({ network, scenes, T, corridor }: { network: Network; scenes: SceneInfo[]; T: number; corridor: Corridor }) {
   useClock();
   const scene = useArena((s) => s.scene);
   const replay = useArena((s) => s.replay);
@@ -348,14 +440,18 @@ export function Arena({ network, scenes, T }: { network: Network; scenes: SceneI
         </div>
       ) : null}
 
+      {replay ? <CorridorCard corridor={corridor} scene={scene} replay={replay} /> : null}
+
       {replay ? (
         <p className="text-sm text-muted">
           Text summary: at simulation time {clock(replay.t0 + second)}, vehicles on the approaches have waited on
           average {fmt(replay.sides.left.series.wait_now[second])} s under {replay.left.label} and{" "}
           {fmt(replay.sides.right.series.wait_now[second])} s under {replay.right.label}. Cumulative waiting since the
           start of the clip: {fmt(replay.sides.left.series.person_wait_cum[second], 0)} against{" "}
-          {fmt(replay.sides.right.series.person_wait_cum[second], 0)} person-minutes. Both sides receive identical
-          arrivals (regime {replay.regime}, seed {replay.seed}).
+          {fmt(replay.sides.right.series.person_wait_cum[second], 0)} person-minutes. Longest wait per approach right now ({approaches.join(", ")}):{" "}
+          {(replay.sides.left.series.max_wait_by_approach[second] ?? []).join(", ")} s on the left and{" "}
+          {(replay.sides.right.series.max_wait_by_approach[second] ?? []).join(", ")} s on the right. Both sides receive
+          identical arrivals (regime {replay.regime}, seed {replay.seed}).
         </p>
       ) : null}
     </div>

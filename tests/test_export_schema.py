@@ -12,6 +12,7 @@ import pytest
 from greenwave.netjson import network_json
 from greenwave.web_schema import (
     AblationRow,
+    Corridor,
     Curve,
     FairnessEntry,
     Generalisation,
@@ -57,6 +58,10 @@ def test_exported_files_validate(data: Path) -> None:
         PerClassRow.model_validate(row)
     for row in load(data / "results" / "ablations.json"):
         AblationRow.model_validate(row)
+    corridor = Corridor.model_validate(load(data / "corridor.json"))
+    for scene in corridor.scenes.values():
+        for road in scene.roads.values():
+            assert road.left_trip_s == pytest.approx(corridor.free_flow_s + corridor.signals * road.left_delay_s)
     if data.name == "fixtures":
         assert meta.mock, "fixtures must be flagged as mock data"
 
@@ -90,7 +95,8 @@ def test_zod_schema_names_the_same_fields() -> None:
     """Both sides of the contract must agree on field names (snake_case, shared)."""
     zod = (ROOT / "web" / "src" / "lib" / "schemas.mjs").read_text(encoding="utf-8")
     zod_fields = set(re.findall(r"^\s+([a-z_][a-z0-9_]*):", zod, flags=re.MULTILINE))
-    for model in (Meta, Network, MainRow, Curve, Generalisation, FairnessEntry, AblationRow, Replay):
+    models = (Meta, Network, MainRow, Curve, Generalisation, FairnessEntry, AblationRow, Replay, Corridor)
+    for model in models:
         for name, field in model.model_fields.items():
             key = field.alias or name
             assert key in zod_fields, f"{model.__name__}.{key} is missing from schemas.mjs"

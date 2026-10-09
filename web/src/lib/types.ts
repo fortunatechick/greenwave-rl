@@ -1,6 +1,7 @@
 import type { z } from "zod";
 import type {
   AblationsSchema,
+  CorridorSchema,
   CurvesSchema,
   DemandSchema,
   FairnessSchema,
@@ -21,6 +22,7 @@ export type Fairness = z.infer<typeof FairnessSchema>;
 export type PerClassRow = z.infer<typeof PerClassSchema>[number];
 export type AblationRow = z.infer<typeof AblationsSchema>[number];
 export type Demand = z.infer<typeof DemandSchema>;
+export type Corridor = z.infer<typeof CorridorSchema>;
 export type Replay = z.infer<typeof ReplaySchema>;
 export type ReplaySide = Replay["sides"]["left"];
 
