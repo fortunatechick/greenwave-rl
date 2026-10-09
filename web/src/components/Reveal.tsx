@@ -27,10 +27,12 @@ export function Counter({ value, digits = 0, prefix = "", suffix = "" }: { value
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const reduced = useReducedMotion();
-  const [shown, setShown] = useState(reduced ? value : 0);
+  // The real value is what is rendered by default (in the static HTML, in a hidden tab, in a
+  // screenshot). The count-up only runs once the element is actually being painted.
+  const [shown, setShown] = useState(value);
 
   useEffect(() => {
-    if (!inView || reduced) return;
+    if (!inView || reduced || document.hidden) return;
     let frame = 0;
     const start = performance.now();
     const tick = (now: number) => {
