@@ -1,0 +1,20 @@
+{
+  "name": "ddqn_fair__skewed__s0",
+  "agent": "ddqn",
+  "regime": "skewed",
+  "reward": "fair",
+  "lam": 4.0,
+  "T": 90.0,
+  "bus_weight": null,
+  "steps": 100000,
+  "seed": 0,
+  "delta": null,
+  "sublane": true,
+  "obs_mask": [],
+  "network": "junction",
+  "group": "main",
+  "family": "ddqn_fair__skewed",
+  "eval_every": 10000,
+  "smdp_discount": false,
+  "hp": {}
+}

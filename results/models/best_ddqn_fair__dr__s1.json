@@ -1,0 +1,20 @@
+{
+  "name": "ddqn_fair__dr__s1",
+  "agent": "ddqn",
+  "regime": "dr",
+  "reward": "fair",
+  "lam": 4.0,
+  "T": 90.0,
+  "bus_weight": null,
+  "steps": 100000,
+  "seed": 1,
+  "delta": null,
+  "sublane": true,
+  "obs_mask": [],
+  "network": "junction",
+  "group": "main",
+  "family": "ddqn_fair__dr",
+  "eval_every": 10000,
+  "smdp_discount": false,
+  "hp": {}
+}

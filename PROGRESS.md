@@ -1,97 +1,46 @@
 # Progress
 
-**Current phase:** 4 (training) with 5-8 scaffolding complete  
-**Last update:** 2026-10-09 01:40
+**Current phase:** 8 (delivered locally; Vercel deployment open)  
+**Last update:** 2026-10-09 07:10
 
 | Phase | Status | Notes |
 | --- | --- | --- |
 | 0 Setup and toy junction | done | Python 3.11.16, SUMO 1.28.0, toy runs under TraCI and libsumo |
 | 1 Network and demand | done | Plain-XML junction, 4 regimes, 200-file DR pool, Webster plans, 0 % teleports |
-| 2 Env, rewards, baselines, budget | done | 30 tests green; baselines x 4 regimes x 10 seeds in `results/summary/baselines.csv`; day profile chosen |
-| 3 Agents and sanity checks | done | Toy sanity passed (Double DQN 52 s vs random 131 s); all three agents smoke-tested |
-| 4 Training queue | in progress | First launch stopped after the sweep exposed a DQN instability; diagnostics running |
-| 5 Website | done on fixtures | 6 pages, replay engine, lint / typecheck / build pass with mock data |
-| 6 Evaluation, figures, replays, export | scripts ready | Waiting for trained agents |
-| 7 Local demo and report | scripts ready | `demo/side_by_side.py`, `demo/dashboard.py`, `report/fill.py` |
-| 8 Polish, GitHub, Vercel | pending | README and CI written; publishing needs the user's go-ahead |
+| 2 Env, rewards, baselines, budget | done | Baselines x 4 regimes x 10 seeds; day profile chosen |
+| 3 Agents and sanity checks | done | Toy sanity passed (Double DQN 52 s vs random 131 s) |
+| 4 Training queue | done | 58 jobs, 0 failed, 26.7 CPU-hours (02:01-06:35), after a restart for stability |
+| 5 Website | done | 6 pages, replay arena, real data, mock guard passes |
+| 6 Evaluation, figures, replays, export | done | `python tasks.py eval figures replays export` |
+| 7 Local demo and report | done | Side-by-side demo run for 120 s with a scripted surge; Streamlit dashboard not run |
+| 8 Polish, GitHub, Vercel | partly | Private repo `fortunatechick/greenwave-rl`; Vercel not deployed; CI not yet observed |
 
-## Key numbers
+## Key numbers (10 held-out seeds, wait per person in seconds)
 
-- Peak demand: 3,636 veh/h, Webster cycle 120 s, design degree of saturation 0.85.
-- Baselines, wait per person at peak: fixed-time 34.2 s, actuated 23.0 s, max-pressure 16.3 s, random 60.9 s.
-- Simulation speed: about 55 decisions/s per process when idle, about 25/s with 7 jobs in parallel.
+| Controller | Low | Peak | Skewed | Surge |
+| --- | --- | --- | --- | --- |
+| Fixed-time (matched) | 12.1 | 34.2 | 25.7 | 36.4 |
+| Max-pressure | 9.1 | 16.3 | 17.8 | 17.6 |
+| Double DQN, fair (regime-matched) | 9.3 | 21.3 | 17.7 | 14.9 |
+| Double DQN, fair + DR | 14.5 | 28.5 | 14.7 | 18.1 |
+
+- Against max-pressure the regime-matched agent is statistically tied in all four regimes.
+- Fairness penalty: longest wait 115 s against 174 s without it (p = 0.029), at a cost of 15.7 s against 12.9 s
+  wait per person.
+- Passenger weighting: bus delay 29.3 s against 37.8 s, not statistically significant (p = 0.17).
+- Domain randomisation recovers 55 % of the generalisation gap on wait per person.
+- Chosen lambda = 4, T = 90 s.
 
 ## Open issues
 
-- **DQN instability.** In the first sweep, policies reached an average queue of about 12.5 vehicles on the skewed
-  regime by 10k steps (max-pressure: 16.3) and then collapsed to about 65 by 20k. Seven 30k-step variants
-  (learning rate, target update, discount, reward clipping, Polyak averaging, learning-rate decay) are running to
-  pick a stabiliser before the long runs start. Best-checkpoint selection already protects the final numbers, but
-  the cause should be fixed rather than hidden.
+- Vercel deployment and a public repository are not done (repository is private at the user's request).
+- GitHub Actions CI has been written but its first run has not been checked.
+- Lighthouse was measured on the home page only (93 / 100 / 100 / 100, mobile).
+- DQN training still shows occasional bad checkpoints; results use the best checkpoint per run.
+- Not run: the `full` profile, the corridor stretch goal, the Streamlit dashboard, a from-scratch `make all`.
 
 ## Training queue
 
 <!-- queue:start -->
-Profile `day` - updated 2026-10-09 02:32 - 9 done, 42 pending, 7 running
-
-| Job | State | Steps | Minutes | Best validation score |
-| --- | --- | --- | --- | --- |
-| sweep_l0.25_T120__s0 | done | 30000 | 15.7 | -0.1021 |
-| sweep_l0.25_T60__s0 | done | 30000 | 15.4 | -0.1028 |
-| sweep_l0.25_T90__s0 | done | 30000 | 14.9 | -0.1013 |
-| sweep_l1_T120__s0 | done | 30000 | 14.4 | -0.0994 |
-| sweep_l1_T60__s0 | done | 30000 | 15.6 | -0.0972 |
-| sweep_l1_T90__s0 | done | 30000 | 15.7 | -0.1131 |
-| sweep_l4_T120__s0 | done | 30000 | 15.5 | -0.0994 |
-| sweep_l4_T60__s0 | done | 30000 | 9.6 | -0.1198 |
-| sweep_l4_T90__s0 | done | 30000 | 8.8 | -0.0943 |
-| ddqn_fair__peak__s0 | running | 100000 |  |  |
-| ddqn_fair__peak__s1 | running | 100000 |  |  |
-| ddqn_fair__peak__s2 | running | 100000 |  |  |
-| ddqn_fair__low__s0 | running | 100000 |  |  |
-| ddqn_fair__skewed__s0 | running | 100000 |  |  |
-| ddqn_fair__surge__s0 | running | 100000 |  |  |
-| ddqn_fair__low__s1 | running | 100000 |  |  |
-| ddqn_fair__skewed__s1 | pending | 100000 |  |  |
-| ddqn_fair__surge__s1 | pending | 100000 |  |  |
-| ddqn_fair__low__s2 | pending | 100000 |  |  |
-| ddqn_fair__skewed__s2 | pending | 100000 |  |  |
-| ddqn_fair__surge__s2 | pending | 100000 |  |  |
-| ddqn_fair__dr__s0 | pending | 100000 |  |  |
-| ddqn_fair__dr__s1 | pending | 100000 |  |  |
-| ddqn_fair__dr__s2 | pending | 100000 |  |  |
-| dqn_sb3__peak__s0 | pending | 100000 |  |  |
-| ppo__peak__s0 | pending | 100000 |  |  |
-| dqn_sb3__peak__s1 | pending | 100000 |  |  |
-| ppo__peak__s1 | pending | 100000 |  |  |
-| dqn_sb3__peak__s2 | pending | 100000 |  |  |
-| ppo__peak__s2 | pending | 100000 |  |  |
-| abl_bus20__peak__s0 | pending | 50000 |  |  |
-| abl_bus60__peak__s0 | pending | 50000 |  |  |
-| abl_delta10__peak__s0 | pending | 35000 |  |  |
-| abl_delta15__peak__s0 | pending | 30000 |  |  |
-| abl_nofair__skewed__s0 | pending | 50000 |  |  |
-| abl_nomaxwait__peak__s0 | pending | 50000 |  |  |
-| abl_nosublane__peak__s0 | pending | 50000 |  |  |
-| abl_notimer__peak__s0 | pending | 50000 |  |  |
-| abl_ref__peak__s0 | pending | 50000 |  |  |
-| abl_ref__skewed__s0 | pending | 50000 |  |  |
-| abl_reward_pressure__peak__s0 | pending | 50000 |  |  |
-| abl_reward_queue__peak__s0 | pending | 50000 |  |  |
-| abl_reward_wait__peak__s0 | pending | 50000 |  |  |
-| abl_vehicle_fair__peak__s0 | pending | 50000 |  |  |
-| abl_bus20__peak__s1 | pending | 50000 |  |  |
-| abl_bus60__peak__s1 | pending | 50000 |  |  |
-| abl_delta10__peak__s1 | pending | 35000 |  |  |
-| abl_delta15__peak__s1 | pending | 30000 |  |  |
-| abl_nofair__skewed__s1 | pending | 50000 |  |  |
-| abl_nomaxwait__peak__s1 | pending | 50000 |  |  |
-| abl_nosublane__peak__s1 | pending | 50000 |  |  |
-| abl_notimer__peak__s1 | pending | 50000 |  |  |
-| abl_ref__peak__s1 | pending | 50000 |  |  |
-| abl_ref__skewed__s1 | pending | 50000 |  |  |
-| abl_reward_pressure__peak__s1 | pending | 50000 |  |  |
-| abl_reward_queue__peak__s1 | pending | 50000 |  |  |
-| abl_reward_wait__peak__s1 | pending | 50000 |  |  |
-| abl_vehicle_fair__peak__s1 | pending | 50000 |  |  |
+Finished: 58 of 58 jobs done. Per-job detail in `results/summary/training_status.json`.
 <!-- queue:end -->

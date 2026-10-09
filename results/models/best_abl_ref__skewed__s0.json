@@ -1,0 +1,20 @@
+{
+  "name": "abl_ref__skewed__s0",
+  "agent": "ddqn",
+  "regime": "skewed",
+  "reward": "fair",
+  "lam": 4.0,
+  "T": 90.0,
+  "bus_weight": null,
+  "steps": 50000,
+  "seed": 0,
+  "delta": null,
+  "sublane": true,
+  "obs_mask": [],
+  "network": "junction",
+  "group": "ablation",
+  "family": "abl_ref__skewed",
+  "eval_every": 10000,
+  "smdp_discount": false,
+  "hp": {}
+}

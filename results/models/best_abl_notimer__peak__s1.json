@@ -1,0 +1,22 @@
+{
+  "name": "abl_notimer__peak__s1",
+  "agent": "ddqn",
+  "regime": "peak",
+  "reward": "fair",
+  "lam": 4.0,
+  "T": 90.0,
+  "bus_weight": null,
+  "steps": 50000,
+  "seed": 1,
+  "delta": null,
+  "sublane": true,
+  "obs_mask": [
+    "timer"
+  ],
+  "network": "junction",
+  "group": "ablation",
+  "family": "abl_notimer__peak",
+  "eval_every": 10000,
+  "smdp_discount": false,
+  "hp": {}
+}

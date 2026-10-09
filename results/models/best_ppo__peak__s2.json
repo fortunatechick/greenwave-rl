@@ -1,0 +1,20 @@
+{
+  "name": "ppo__peak__s2",
+  "agent": "ppo",
+  "regime": "peak",
+  "reward": "fair",
+  "lam": 4.0,
+  "T": 90.0,
+  "bus_weight": null,
+  "steps": 100000,
+  "seed": 2,
+  "delta": null,
+  "sublane": true,
+  "obs_mask": [],
+  "network": "junction",
+  "group": "main",
+  "family": "ppo__peak",
+  "eval_every": 10000,
+  "smdp_discount": false,
+  "hp": {}
+}

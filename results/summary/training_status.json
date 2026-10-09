@@ -5,51 +5,408 @@
     "sweep_l0.25_T120__s0": {
       "steps": 30000,
       "group": "sweep",
-      "state": "running"
+      "state": "done",
+      "minutes": 15.697993969917297,
+      "best_val_score": -0.10208782997840339
     },
     "sweep_l0.25_T60__s0": {
       "steps": 30000,
       "group": "sweep",
-      "state": "running"
+      "state": "done",
+      "minutes": 15.362493030230205,
+      "best_val_score": -0.10281420792358559
     },
     "sweep_l0.25_T90__s0": {
       "steps": 30000,
       "group": "sweep",
-      "state": "running"
+      "state": "done",
+      "minutes": 14.860697122414907,
+      "best_val_score": -0.10131738630087332
     },
     "sweep_l1_T120__s0": {
       "steps": 30000,
       "group": "sweep",
-      "state": "running"
+      "state": "done",
+      "minutes": 14.356287252902984,
+      "best_val_score": -0.09937161236707248
     },
     "sweep_l1_T60__s0": {
       "steps": 30000,
       "group": "sweep",
       "state": "done",
-      "minutes": 19.961928526560467,
-      "best_val_score": -0.06257795390305586
+      "minutes": 15.6136248310407,
+      "best_val_score": -0.0971753848679317
     },
     "sweep_l1_T90__s0": {
       "steps": 30000,
       "group": "sweep",
-      "state": "running"
+      "state": "done",
+      "minutes": 15.697687311967213,
+      "best_val_score": -0.11306925998313999
     },
     "sweep_l4_T120__s0": {
       "steps": 30000,
       "group": "sweep",
       "state": "done",
-      "minutes": 22.886896181106568,
-      "best_val_score": -0.018204486064728624
+      "minutes": 15.529297173023224,
+      "best_val_score": -0.099445490081411
     },
     "sweep_l4_T60__s0": {
       "steps": 30000,
       "group": "sweep",
-      "state": "running"
+      "state": "done",
+      "minutes": 9.59927975734075,
+      "best_val_score": -0.11975280731723581
     },
     "sweep_l4_T90__s0": {
       "steps": 30000,
       "group": "sweep",
-      "state": "running"
+      "state": "done",
+      "minutes": 8.8465149919192,
+      "best_val_score": -0.0942934871266102
+    },
+    "ddqn_fair__peak__s0": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 51.60353116194407,
+      "best_val_score": -0.14857418550608675
+    },
+    "ddqn_fair__peak__s1": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 49.598685105641685,
+      "best_val_score": -0.14356086581818758
+    },
+    "ddqn_fair__peak__s2": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 52.355465745925905,
+      "best_val_score": -0.14245206143523303
+    },
+    "ddqn_fair__low__s0": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 17.785820933183036,
+      "best_val_score": -0.02765515354533346
+    },
+    "ddqn_fair__skewed__s0": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 48.011220427354175,
+      "best_val_score": -0.08683362060563159
+    },
+    "ddqn_fair__surge__s0": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 41.16361809968949,
+      "best_val_score": -0.085735110146697
+    },
+    "ddqn_fair__low__s1": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 17.785798740386962,
+      "best_val_score": -0.02822920994988127
+    },
+    "ddqn_fair__skewed__s1": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 48.932187867164615,
+      "best_val_score": -0.08733298877757095
+    },
+    "ddqn_fair__surge__s1": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 41.833992691834766,
+      "best_val_score": -0.08707576635870404
+    },
+    "ddqn_fair__low__s2": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 17.45345275402069,
+      "best_val_score": -0.026307533545025664
+    },
+    "ddqn_fair__skewed__s2": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 48.10148488680522,
+      "best_val_score": -0.09032902253890579
+    },
+    "ddqn_fair__surge__s2": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 41.587183105945584,
+      "best_val_score": -0.09523753571666757
+    },
+    "ddqn_fair__dr__s0": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 51.94214898745219,
+      "best_val_score": -0.15749539851336597
+    },
+    "ddqn_fair__dr__s1": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 55.031704195340474,
+      "best_val_score": -0.14980240197260322
+    },
+    "ddqn_fair__dr__s2": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 53.111879126230875,
+      "best_val_score": -0.15021425554580892
+    },
+    "dqn_sb3__peak__s0": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 54.36443585952123,
+      "best_val_score": -0.14616740280193102
+    },
+    "ppo__peak__s0": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 15.691626373926798,
+      "best_val_score": -0.13341692700718705
+    },
+    "dqn_sb3__peak__s1": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 54.78173699378967,
+      "best_val_score": -0.13493590236845768
+    },
+    "ppo__peak__s1": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 13.685668802261352,
+      "best_val_score": -0.14060381815663528
+    },
+    "dqn_sb3__peak__s2": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 52.0292151649793,
+      "best_val_score": -0.1424870128981843
+    },
+    "ppo__peak__s2": {
+      "steps": 100000,
+      "group": "main",
+      "state": "done",
+      "minutes": 13.352479990323385,
+      "best_val_score": -0.13250433216885474
+    },
+    "abl_bus20__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 26.223019150892892,
+      "best_val_score": -0.1527815796966884
+    },
+    "abl_bus60__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 24.30319886604945,
+      "best_val_score": -0.14740812500734585
+    },
+    "abl_delta10__peak__s0": {
+      "steps": 35000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 20.04289131561915,
+      "best_val_score": -0.13834661967712655
+    },
+    "abl_delta15__peak__s0": {
+      "steps": 30000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 16.7876655459404,
+      "best_val_score": -0.14751319828115425
+    },
+    "abl_nofair__skewed__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 23.551341831684113,
+      "best_val_score": -0.09059025223533768
+    },
+    "abl_nomaxwait__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 24.88763554096222,
+      "best_val_score": -0.1297593230975479
+    },
+    "abl_nosublane__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 13.779840608437857,
+      "best_val_score": -3.697260354199904
+    },
+    "abl_notimer__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 24.21876039902369,
+      "best_val_score": -0.14818422960580432
+    },
+    "abl_ref__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 24.301891883214314,
+      "best_val_score": -0.15984247218332098
+    },
+    "abl_ref__skewed__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 24.05141829252243,
+      "best_val_score": -0.08853992828452273
+    },
+    "abl_reward_pressure__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 25.637242754300434,
+      "best_val_score": -1.5339568245125348
+    },
+    "abl_reward_queue__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 25.637478959560394,
+      "best_val_score": -1.5339568245125348
+    },
+    "abl_reward_wait__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 23.71734006802241,
+      "best_val_score": -0.16726406685236794
+    },
+    "abl_vehicle_fair__peak__s0": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 24.719097793102264,
+      "best_val_score": -0.15496713091922015
+    },
+    "abl_bus20__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 23.968322098255157,
+      "best_val_score": -0.15382867966573827
+    },
+    "abl_bus60__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 24.135165623823802,
+      "best_val_score": -0.1442846122805577
+    },
+    "abl_delta10__peak__s1": {
+      "steps": 35000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 19.12332943280538,
+      "best_val_score": -0.14097075294411365
+    },
+    "abl_delta15__peak__s1": {
+      "steps": 30000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 18.79070518811544,
+      "best_val_score": -0.14953837222624072
+    },
+    "abl_nofair__skewed__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 23.383324094613393,
+      "best_val_score": -0.08984765847427648
+    },
+    "abl_nomaxwait__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 26.221865904331207,
+      "best_val_score": -0.1360582547181912
+    },
+    "abl_nosublane__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 13.946537288029988,
+      "best_val_score": -4.106222622351497
+    },
+    "abl_notimer__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 23.382519121964773,
+      "best_val_score": -0.1495983086843442
+    },
+    "abl_ref__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 23.632499742507935,
+      "best_val_score": -0.1521285723079766
+    },
+    "abl_ref__skewed__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 25.134448897838592,
+      "best_val_score": -0.1110843888025363
+    },
+    "abl_reward_pressure__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 25.13293890953064,
+      "best_val_score": -1.5267980501392757
+    },
+    "abl_reward_queue__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 24.21502452294032,
+      "best_val_score": -1.5267980501392757
+    },
+    "abl_reward_wait__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 21.876156588395435,
+      "best_val_score": -0.15907903899721468
+    },
+    "abl_vehicle_fair__peak__s1": {
+      "steps": 50000,
+      "group": "ablation",
+      "state": "done",
+      "minutes": 20.037633144855498,
+      "best_val_score": -0.15211650417827313
     }
   }
 }

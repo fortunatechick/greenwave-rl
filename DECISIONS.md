@@ -100,3 +100,20 @@ Every choice that departs from, or fills a gap in, `GREENWAVE_BUILD.md`. Entries
 - **Chosen:** lambda = 4, T = 90 s (person wait 13.3 s, max wait 74 s).
 - **Rule applied:** lowest person delay among settings with max wait <= 1.2 T.
 - **Effect:** every main and ablation run uses these values.
+
+### 2026-10-09 - Website and delivery choices  **[deviation]**
+- **What:** (1) shadcn/ui was not installed; tabs, select, slider and switch are small hand-written accessible
+  controls styled to the tokens. (2) The light-theme signal colours are darker than the spec's (`#0B7A41`,
+  `#8F5B00`, `#C32224`) so that text in them meets WCAG AA on white. (3) `docs/network.png` is drawn with
+  matplotlib from the network file instead of a sumo-gui screenshot. (4) The GitHub repository is private at the
+  user's request and the site has not been deployed to Vercel, so there is no live link yet.
+- **Done instead:** The site is a verified static build served locally; the repository is private and Vercel deployment is left to the user. Lighthouse was measured on the home page only (mobile: performance 93, accessibility 100, best practices 100, SEO 100).
+- **Effect:** the acceptance items "repository public" and "Vercel deployment live" are open.
+
+### 2026-10-09 - Results notes
+- The queue and pressure rewards produce identical training runs at an isolated junction, because outgoing lanes
+  never queue and pressure reduces to the incoming queue.
+- With the sub-lane model off every controller is much slower at peak demand, so that ablation changes junction
+  capacity, not only the ranking of controllers.
+- The ablation reference (50k steps, 2 seeds) scored better at peak than the main run (100k steps, 3 seeds):
+  18.6 s against 21.3 s wait per person. Training variance between seeds is larger than the effect of the budget.

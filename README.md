@@ -22,7 +22,22 @@ Agents learn to choose signal phases from live queues, weighting people rather t
 ## Key results
 
 <!-- results:start -->
-_Results pending: run `python tasks.py eval export`._
+Wait per person in seconds (mean over evaluation seeds), and the longest wait in the skewed regime.
+
+| Controller | Low | Peak | Skewed | Surge | Max wait, skewed (s) |
+| --- | --- | --- | --- | --- | --- |
+| Fixed-time (stale peak plan) | 29.9 | 34.2 | 68.0 | 50.7 | 268 |
+| Fixed-time (matched plan) | 12.1 | 34.2 | 25.7 | 36.4 | 179 |
+| Actuated | 12.4 | 23.0 | 18.0 | 20.8 | 151 |
+| Max-pressure | 9.1 | 16.3 | 17.8 | 17.6 | 208 |
+| DQN, SB3 (trained on peak) | 15.0 | 22.0 | 20.6 | 17.6 | 218 |
+| PPO, SB3 (trained on peak) | 12.1 | 21.7 | 14.5 | 17.3 | 125 |
+| Double DQN, fair reward (ours) | 9.3 | 21.3 | 17.7 | 14.9 | 175 |
+| Double DQN, fair + DR (ours) | 14.5 | 28.5 | 14.7 | 18.1 | 147 |
+
+Against a fixed-time plan tuned for each demand pattern, the regime-matched Double DQN cuts wait per person significantly in 3 of 4 regimes (low, peak, surge). Against max-pressure, a rule that needs no training, it is significantly better on wait per person in no regime, significantly worse in no regime, and statistically tied in low, peak, skewed, surge. On the maximum wait it is better in no regime, worse in no regime and tied in low, peak, skewed, surge. Significance is a Welch t-test over 10 held-out seeds at p < 0.05.
+
+> **Data: synthetic demand.** Demand is **synthetic**: no vehicles were counted at a real junction.
 <!-- results:end -->
 
 Full tables, ablations and the generalisation study: [`report/REPORT.md`](report/REPORT.md) and the live site.
@@ -68,6 +83,7 @@ python tasks.py train        # budget planner, then the job queue (resumable)
 CPU-bound; a GPU adds almost nothing.
 
 <!-- hardware:start -->
+This repository's results: profile `day`, 58 training jobs, 26.7 CPU-hours on 7 workers (Intel i5-12450H, 16 GB RAM, Windows 11), measured at 55 decisions per second per simulation.
 <!-- hardware:end -->
 
 ## Repository layout

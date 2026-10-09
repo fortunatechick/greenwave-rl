@@ -30,13 +30,16 @@ from greenwave.aggregate import (  # noqa: E402
     CONTROLLER_LABELS,
     SUMMARY,
     ecdf,
+    family_episodes,
     family_of,
     pooled_waits,
     read_episodes,
+    series,
 )  # fmt: skip
 from greenwave.config import CLASSES, REGIMES, load_cfg  # noqa: E402
 from greenwave.env.rewards import reward_params  # noqa: E402
 from greenwave.jobs import family_jobs  # noqa: E402
+from greenwave.metrics import welch_p  # noqa: E402
 from greenwave.netjson import network_json  # noqa: E402
 from greenwave.plan import sweep_choice  # noqa: E402
 from greenwave.web_schema import (  # noqa: E402
@@ -217,6 +220,14 @@ def kpis(table: pd.DataFrame, ablations: list[dict[str, Any]]) -> tuple[dict[str
 
     fair_ref, fair_off = ABLATION_GROUPS["fairness"][1][0][1], ABLATION_GROUPS["fairness"][1][1][1]
     w_ref, w_off = ABLATION_GROUPS["weighting"][1][0][1], ABLATION_GROUPS["weighting"][1][1][1]
+    fam = family_episodes(read_episodes("agents"))
+
+    def tested(fam_a: str, fam_b: str, regime: str, metric: str) -> str:
+        p = welch_p(series(fam, "family", fam_a, regime, metric), series(fam, "family", fam_b, regime, metric))
+        if not np.isfinite(p):
+            return ""
+        return f"; p = {p:.3f}, significant" if p < 0.05 else f"; p = {p:.2f}, not statistically significant"
+
     a, b = abl("fairness", fair_ref, "max_wait"), abl("fairness", fair_off, "max_wait")
     c, d = abl("weighting", w_ref, "delay_bus"), abl("weighting", w_off, "delay_bus")
     tiles = [
@@ -227,10 +238,12 @@ def kpis(table: pd.DataFrame, ablations: list[dict[str, Any]]) -> tuple[dict[str
         {"key": "fair", "label": "Longest wait vs an agent without the fairness penalty",
          "value": change(a, b),
          "detail": (f"{a:.0f} s against {b:.0f} s, skewed regime, budget-matched runs"
+                    + tested("abl_ref__skewed", "abl_nofair__skewed", "skewed", "max_wait")
                     if a is not None and b is not None else "ablation pending")},
         {"key": "bus", "label": "Bus delay vs a vehicle-count reward",
          "value": change(c, d),
          "detail": (f"{c:.1f} s against {d:.1f} s, peak regime, budget-matched runs"
+                    + tested("abl_ref__peak", "abl_vehicle_fair__peak", "peak", "delay_bus")
                     if c is not None and d is not None else "ablation pending")},
     ]  # fmt: skip
     return headline, tiles

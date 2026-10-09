@@ -39,7 +39,12 @@ export function Counter({ value, digits = 0, prefix = "", suffix = "" }: { value
       if (p < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
+    // Never leave a half-counted number on screen if animation frames are throttled.
+    const settle = window.setTimeout(() => setShown(value), 1100);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(settle);
+    };
   }, [inView, reduced, value]);
 
   const display = reduced ? value : shown;

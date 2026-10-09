@@ -255,6 +255,13 @@ def ablation_rows(fam: pd.DataFrame, base: pd.DataFrame, base_ns: pd.DataFrame) 
                     f"not the reference ({ref_label}, {mean(ref_label, 'person_wait'):.1f} s; "
                     f"{sig(p(best, 'person_wait'))})."
                 )
+        if group == "reward" and {"queue length", "pressure"} <= set(present):
+            if abs(mean("queue length", "person_wait") - mean("pressure", "person_wait")) < 1e-9:
+                takeaway += (" The queue and pressure rewards give identical runs: the exits of an isolated junction"
+                             " never queue, so the two rewards are the same number.")
+        if group == "sublane":
+            takeaway += (" Every controller is slower without sub-lane movement, so this ablation changes the"
+                         " capacity of the junction and not only the ranking.")
         for _, label, is_ref in variants:
             for metric, s in stats[label].items():
                 rows.append({"group": group, "variant": label, "metric": metric, **s, "regime": regime,

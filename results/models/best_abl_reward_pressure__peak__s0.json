@@ -1,0 +1,20 @@
+{
+  "name": "abl_reward_pressure__peak__s0",
+  "agent": "ddqn",
+  "regime": "peak",
+  "reward": "pressure",
+  "lam": 4.0,
+  "T": 90.0,
+  "bus_weight": null,
+  "steps": 50000,
+  "seed": 0,
+  "delta": null,
+  "sublane": true,
+  "obs_mask": [],
+  "network": "junction",
+  "group": "ablation",
+  "family": "abl_reward_pressure__peak",
+  "eval_every": 10000,
+  "smdp_discount": false,
+  "hp": {}
+}
